@@ -13,4 +13,3 @@ export const loginFailed = payload => ({
   type: types.LOGIN_SUCCESS,
   payload
 })
-
