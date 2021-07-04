@@ -1,36 +1,34 @@
-
 interface IProduct {
-    id: string
-    title: string,
-    description: string,
-    imgUrl: string,
-    thumbUrl: string,
-    quantity: number
-    price: number,
-    provider: string,
-    publisher: string,
-    stock: number,
-    category: string,
-    author: string
+  id: string
+  title: string
+  description: string
+  imgUrl: string
+  thumbUrl: string
+  quantity: number
+  price: number
+  provider: string
+  publisher: string
+  stock: number
+  category: string
+  author: string
 }
 
-
 interface IResponseGetProductApi extends IResponse {
-    data: {
-        products: IProduct[]
-    }
+  data: {
+    products: IProduct[]
+  }
 }
 
 interface IResponseGetProductPayload extends IActionCreator {
-    payload: IResponseGetProductApi
+  payload: IResponseGetProductApi
 }
 
 interface IResponseGetProductItemApi extends IResponse {
-    data: {
-        product: IProduct
-    }
+  data: {
+    product: IProduct
+  }
 }
 
 interface IResponseGetProductItem extends IActionCreator {
-    payload: IResponseGetProductItemApi
+  payload: IResponseGetProductItemApi
 }
