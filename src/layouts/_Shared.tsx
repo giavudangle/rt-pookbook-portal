@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react"
 import Header from "src/components/Header/Header"
-import SideNav from "src/components/SideNav/SideNav"
+import SideNav from "src/components/SideBar/SideBar"
 
 interface Props {
   children: ReactNode
