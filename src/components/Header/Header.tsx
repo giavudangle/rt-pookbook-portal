@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from "react-redux"
 import { logout, toggleSideBar } from "../../app/app.actions"
 import { useHistory } from "react-router-dom"
 import { LogoutIcon } from "./Header.styles"
-import { PATH } from "src/constants/paths"
+import { PATH } from "../../constants/paths"
 
 const mapStateToProps = state => ({})
 

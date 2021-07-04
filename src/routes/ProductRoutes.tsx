@@ -1,14 +1,10 @@
 import React, { lazy, Suspense } from "react"
 import { Switch } from "react-router-dom"
 import AuthenticatedGuard from "../guards/AuthenticatedGuard"
-import { PATH } from "src/constants/paths"
-import Loading from "src/components/Loading/Loading"
-const ProductList = lazy(
-  () => import("../pages/Product/ProductList")
-)
-const ProductItem = lazy(
-  () => import("../pages/Product/ProductItem")
-)
+import { PATH } from "../constants/paths"
+import Loading from "../components/Loading/Loading"
+const ProductList = lazy(() => import("../pages/Product/ProductList"))
+const ProductItem = lazy(() => import("../pages/Product/ProductItem"))
 export default function ProductRoutes() {
   return (
     <Switch>

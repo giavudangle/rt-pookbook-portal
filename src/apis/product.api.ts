@@ -1,4 +1,8 @@
-import { HTTP_RESPONSE_CODE, HTTP_RESPONSE_MESSAGE, HTTP_RESPONSE_STATUS } from "src/constants/http"
+import {
+  HTTP_RESPONSE_CODE,
+  HTTP_RESPONSE_MESSAGE,
+  HTTP_RESPONSE_STATUS
+} from "src/constants/http"
 
 const mockData: IProduct[] = [
   {
@@ -17,7 +21,7 @@ const mockData: IProduct[] = [
   }
 ]
 
-export const getProductList = (): Promise<IResponseGetProductApi> => {
+export const getProductListApi = (): Promise<IResponseGetProductApi> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve({
@@ -33,19 +37,20 @@ export const getProductList = (): Promise<IResponseGetProductApi> => {
   })
 }
 
-
-export const getProduct = (id : string) : Promise<IResponseGetProductItemApi> => {
-  return new Promise((resolve,reject) => {
+export const getProductApi = (
+  id: string
+): Promise<IResponseGetProductItemApi> => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
       const product = mockData.find(p => p.id === id)
-      if(product){
+      if (product) {
         resolve({
-          data:{
+          data: {
             product
           },
-          message:HTTP_RESPONSE_MESSAGE.SUCCESS,
-          code:HTTP_RESPONSE_CODE.SUCCESS,
-          status:HTTP_RESPONSE_STATUS.SUCCESS
+          message: HTTP_RESPONSE_MESSAGE.SUCCESS,
+          code: HTTP_RESPONSE_CODE.SUCCESS,
+          status: HTTP_RESPONSE_STATUS.SUCCESS
         })
       } else {
         reject(new Error(HTTP_RESPONSE_MESSAGE.FAILED))

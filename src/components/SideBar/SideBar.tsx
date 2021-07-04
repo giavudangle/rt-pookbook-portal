@@ -1,11 +1,10 @@
 import React from "react"
 import { NavLink } from "react-router-dom"
 import { Footer, Logo, Menu, Nav } from "./SideBar.styles"
-import { PATH } from "src/constants/paths"
-
+import { PATH } from "../../constants/paths"
 
 import home from "../../assets/images/home.svg"
-import list from "src/assets/images/list.svg"
+import list from "../../assets/images/list.svg"
 
 import { connect, ConnectedProps } from "react-redux"
 

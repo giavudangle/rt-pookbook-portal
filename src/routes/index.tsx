@@ -4,7 +4,7 @@ import ProductRoutes from "./ProductRoutes"
 import LoginRoutes from "./LoginRoutes"
 import HomeRoutes from "./HomeRoutes"
 
-export default function Routes() {
+const Routes = () => {
   return (
     <BrowserRouter>
       <HomeRoutes />
@@ -13,3 +13,5 @@ export default function Routes() {
     </BrowserRouter>
   )
 }
+
+export default Routes
