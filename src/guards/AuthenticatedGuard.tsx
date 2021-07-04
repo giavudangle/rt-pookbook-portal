@@ -6,6 +6,7 @@ import {
   RouteComponentProps
 } from "react-router-dom"
 import { connect } from "react-redux"
+import { PATH } from "../constants/paths"
 
 interface ReduxProps {
   isAuthenticated: boolean
@@ -21,7 +22,7 @@ function AuthenticatedGuard(props: Props) {
       {...rest}
       render={props => {
         if (!isAuthenticated && !localStorage.getItem("token")) {
-          return <Redirect to="/login" />
+          return <Redirect to={PATH.LOGIN} />
         }
         return <Component {...props} />
       }}
