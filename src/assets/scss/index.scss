@@ -1,0 +1,39 @@
+@font-face {
+  font-family: "Robotos";
+  src: url(../fonts/Roboto-Black.ttf);
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Robotos";
+  src: url(../fonts/Roboto-BlackItalic.ttf);
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Robotos";
+  src: url(../fonts/Roboto-Medium.ttf);
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Robotos";
+  src: url(../fonts/Roboto-Bold.ttf);
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Robotos";
+  src: url(../fonts/RobotoMono-VariableFont_wght.ttf);
+  font-weight: 800;
+}
+@font-face {
+  font-family: "Robotos";
+  src: url(../fonts/Roboto-MediumItalic.ttf);
+  font-weight: 800;
+  font-style: italic;
+}
+
+body {
+  font-family: "Robotos", sans-serif;
+  font-weight: 400;
+}
