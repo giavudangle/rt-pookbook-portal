@@ -33,7 +33,6 @@ module.exports = async (env, agrv) => {
         context: path.resolve("public")
       }
     })
-    console.log(copyPluginPatterns,'hehehe');
     
   const basePlugins = [
     new Dotenv(),

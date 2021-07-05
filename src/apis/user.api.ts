@@ -6,7 +6,7 @@ import {
 
 const MOCK_USER: IRequestLogin = {
   email: "vudang@gmail.com",
-  password: "Giavuhehehe"
+  password: "123"
 }
 
 const MOCK_TOKEN =
