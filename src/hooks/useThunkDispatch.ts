@@ -1,5 +1,4 @@
-import {useDispatch} from 'react-redux'
-import type {ThunkDispatchType} from '../store'
+import { useDispatch } from "react-redux"
+import type { ThunkDispatchType } from "../store"
 
-
-export const useThunkDispatch = () => useDispatch<ThunkDispatchType>();
+export const useThunkDispatch = () => useDispatch<ThunkDispatchType>()

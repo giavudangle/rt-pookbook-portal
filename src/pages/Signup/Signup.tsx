@@ -1,53 +1,47 @@
-
-
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import {useStyles} from './Signup.styles'
-import { useState } from 'react';
-import { useHistory } from 'react-router';
-import { useAppSelector } from '../../hooks/useAppSelector';
-import { useThunkDispatch } from '../../hooks/useThunkDispatch';
-import { login } from './Signup.thunks';
-import { PATH } from '../../constants/paths';
-import { FormHelperText } from '@material-ui/core';
-
+import React from "react"
+import Avatar from "@material-ui/core/Avatar"
+import Button from "@material-ui/core/Button"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import TextField from "@material-ui/core/TextField"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Checkbox from "@material-ui/core/Checkbox"
+import Link from "@material-ui/core/Link"
+import Paper from "@material-ui/core/Paper"
+import Box from "@material-ui/core/Box"
+import Grid from "@material-ui/core/Grid"
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined"
+import Typography from "@material-ui/core/Typography"
+import { useStyles } from "./Signup.styles"
+import { useState } from "react"
+import { useHistory } from "react-router"
+import { useAppSelector } from "../../hooks/useAppSelector"
+import { useThunkDispatch } from "../../hooks/useThunkDispatch"
+import { login } from "./Signup.thunks"
+import { PATH } from "../../constants/paths"
+import { FormHelperText } from "@material-ui/core"
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright PookBook© '}
+      {"Copyright PookBook© "}
       <Link color="inherit" href="https://material-ui.com/">
         Vudang Group
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
-  );
+  )
 }
 
+const Login: React.FC = (): JSX.Element => {
+  const [email, setEmail] = useState<string>("")
+  const [password, setPassword] = useState<string>("")
+  const [error, setError] = useState<string>("")
 
-
-
-const Login: React.FC  = () : JSX.Element => {
-  const [email,setEmail] = useState<string>("");
-  const [password,setPassword] = useState<string>("")
-  const [error,setError] = useState<string>("")
-
-  const history = useHistory();
-  const classes = useStyles();
-  const {loading} = useAppSelector(state => state.login)
-  const dispatch = useThunkDispatch();
+  const history = useHistory()
+  const classes = useStyles()
+  const { loading } = useAppSelector(state => state.login)
+  const dispatch = useThunkDispatch()
 
   const _handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value)
@@ -57,8 +51,6 @@ const Login: React.FC  = () : JSX.Element => {
     setPassword(event.target.value)
   }
 
-
-  
   const _handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!loading) {
@@ -72,8 +64,6 @@ const Login: React.FC  = () : JSX.Element => {
         })
     }
   }
-
-
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -145,7 +135,7 @@ const Login: React.FC  = () : JSX.Element => {
         </div>
       </Grid>
     </Grid>
-  );
+  )
 }
 
 export default Login
