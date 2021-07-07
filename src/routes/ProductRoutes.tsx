@@ -8,7 +8,7 @@ const ProductItem = lazy(() => import("../pages/Product/ProductItem"))
 export default function ProductRoutes() {
   return (
     <Switch>
-      <AuthenticatedGuard
+      {/* <AuthenticatedGuard
         exact
         path={PATH.PRODUCT}
         component={() => (
@@ -25,7 +25,7 @@ export default function ProductRoutes() {
             <ProductItem />
           </Suspense>
         )}
-      />
+      /> */}
     </Switch>
   )
 }
