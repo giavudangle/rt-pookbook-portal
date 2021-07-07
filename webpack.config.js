@@ -134,7 +134,8 @@ module.exports = async (env, agrv) => {
       hot: true,
       watchContentBase: true,
       historyApiFallback: true,
-      open: true
+      open: true,
+      
     },
     plugins: isDev ? basePlugins : prodPlugins,
     performance: {
