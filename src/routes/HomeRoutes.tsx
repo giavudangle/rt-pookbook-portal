@@ -14,7 +14,7 @@ export default function HomeRoutes() {
         component={() => (
           <Suspense fallback={<Loading />}>
             <Home />
-          </Suspense>
+          </Suspense>          
         )}
       />
     </Switch>

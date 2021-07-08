@@ -1,5 +1,6 @@
+
 import React from "react"
-import MainLayout from "../../layouts/_Shared"
+import MainLayout from "../../layouts/_LayoutShared"
 export default function Home() {
   return (
     <MainLayout>

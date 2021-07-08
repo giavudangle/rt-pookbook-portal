@@ -5,27 +5,45 @@ import { PATH } from "../constants/paths"
 import Loading from "../components/Loading/Loading"
 const ProductList = lazy(() => import("../pages/Product/ProductList"))
 const ProductItem = lazy(() => import("../pages/Product/ProductItem"))
+
+// export default function ProductRoutes() {
+//   return (
+//     <Switch>
+//       {/* <AuthenticatedGuard
+//         exact
+//         path={PATH.PRODUCT}
+//         component={() => (
+//           <Suspense fallback={<Loading />}>
+//             <ProductList />
+//           </Suspense>
+//         )}
+//       />
+//       <AuthenticatedGuard
+//         exact
+//         path={PATH.PRODUCT + "/:idProduct"}
+//         component={() => (
+//           <Suspense fallback={<Loading />}>
+//             <ProductItem />
+//           </Suspense>
+//         )}
+//       /> */}
+//     </Switch>
+//   )
+// }
+
 export default function ProductRoutes() {
   return (
     <Switch>
-      {/* <AuthenticatedGuard
+      <AuthenticatedGuard
         exact
         path={PATH.PRODUCT}
         component={() => (
           <Suspense fallback={<Loading />}>
-            <ProductList />
+            <ProductList/>
           </Suspense>
         )}
       />
-      <AuthenticatedGuard
-        exact
-        path={PATH.PRODUCT + "/:idProduct"}
-        component={() => (
-          <Suspense fallback={<Loading />}>
-            <ProductItem />
-          </Suspense>
-        )}
-      /> */}
     </Switch>
   )
 }
+
