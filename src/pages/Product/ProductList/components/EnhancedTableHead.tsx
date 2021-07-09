@@ -4,14 +4,14 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import type {Padding as PaddingType} from '@material-ui/core'
 
 const headCells = [
-    { id: 'Title', numeric: false, disablePadding: true, label: 'Title' },
-    { id: 'Image', numeric: true, disablePadding: false, label: 'Thumb' },
-    { id: 'Price', numeric: true, disablePadding: false, label: 'Price (VND)' },
-    { id: 'Category', numeric: true, disablePadding: false, label: 'Category' },
-    { id: 'Author', numeric: true, disablePadding: false, label: 'Author' },
-    { id: 'Publisher', numeric: true, disablePadding: false, label: 'Publisher' },
-    { id: 'Stocks', numeric: true, disablePadding: false, label: 'Stocks' },
-    { id: 'ViewDetail', numeric: true, disablePadding: false, label: 'Detail' },
+    { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
+    { id: 'image', numeric: true, disablePadding: false, label: 'Thumb' },
+    { id: 'price', numeric: true, disablePadding: false, label: 'Price (VND)' },
+    { id: 'category', numeric: true, disablePadding: false, label: 'Category' },
+    { id: 'author', numeric: true, disablePadding: false, label: 'Author' },
+    { id: 'publisher', numeric: true, disablePadding: false, label: 'Publisher' },
+    { id: 'stocks', numeric: true, disablePadding: false, label: 'Stocks' },
+    { id: 'viewDetail', numeric: true, disablePadding: false, label: 'Detail' },
 
 
 ];
@@ -36,7 +36,6 @@ export const  EnhancedTableHead: React.FC<IEnhancedTableHead> = (props)  => {
     const createSortHandler = (property) => (event) => {
       onRequestSort(event, property);
     };
-  
     return (
       <TableHead>
         <TableRow>
@@ -68,7 +67,9 @@ export const  EnhancedTableHead: React.FC<IEnhancedTableHead> = (props)  => {
                 ) : null}
               </TableSortLabel>
             </TableCell>
+            
           ))}
+         
         </TableRow>
       </TableHead>
     );

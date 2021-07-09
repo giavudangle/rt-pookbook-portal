@@ -17,6 +17,9 @@ interface Props extends ReduxProps, RouteProps {
 
 function AuthenticatedGuard(props: Props) {
   const { isAuthenticated, component: Component, ...rest } = props
+  console.log('================AuthenticatedGuard====================');
+  console.log(props);
+  console.log('====================================');
   return (
     <Route
       {...rest}

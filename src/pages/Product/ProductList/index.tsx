@@ -9,17 +9,25 @@ import {
   TableCell,
   Checkbox,
   Avatar,
-  TableContainer
+  TableContainer,
+  FormControlLabel,
+  Switch,
+  TablePagination,
+  Button
 } from "@material-ui/core"
+
 import { EnhancedTableToolbar, EnhancedTableHead } from "./components"
 import { stableSort } from "../../../helpers/sort"
 import { getComparator } from "../../../helpers/comparator"
+
+import { Link, useHistory } from "react-router-dom"
+import { PATH } from "../../../constants/paths"
 
 interface IDataFactory {
   id: string
   title: string
   price: number
-  description?: string
+  //description?: string
   url: string
   thumb: string
   stocks: number
@@ -52,10 +60,11 @@ function DataFactory(payload: IDataFactory) {
 const rows = [
   DataFactory({
     id: "1",
-    title: "Cho tui xin 1 vé đi tuổi thơ haha",
+    title: "Cho tui",
     price: 3000,
     url: "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    thumb:"https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
+    thumb:
+      "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
     stocks: 100,
     author: "Tống Mạc",
     category: "Văn học",
@@ -66,7 +75,7 @@ const rows = [
   }),
   DataFactory({
     id: "2",
-    title: "Cho tui xin 1 vé đi tuổi nha",
+    title: "Cho tui xin ",
     price: 4000,
     url: "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
     thumb:
@@ -81,7 +90,7 @@ const rows = [
   }),
   DataFactory({
     id: "3",
-    title: "Cho tui ",
+    title: "Cho tui xin 1 ve di",
     price: 5000,
     url: "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
     thumb:
@@ -96,7 +105,7 @@ const rows = [
   }),
   DataFactory({
     id: "4",
-    title: "Cho tui xin",
+    title: "Cho tui xin 1 ve di tuoi tho",
     price: 2000,
     url: "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
     thumb:
@@ -108,27 +117,63 @@ const rows = [
     publisher: "Tống Mạc",
     createdAt: "2021-04-26T14:51:46.603Z",
     updatedAt: "2021-04-26T14:51:46.603Z"
+  }),
+  DataFactory({
+    id: "5",
+    title: "Cho tui xin 1 ve di tuoi tho heheheheheh",
+    price: 12000,
+    url: "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
+    thumb:
+      "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
+    stocks: 4100,
+    author: "Tống Mạc",
+    category: "Văn học",
+    provider: "Tống Mạc",
+    publisher: "Tống Mạc",
+    createdAt: "2021-04-26T14:51:46.603Z",
+    updatedAt: "2021-04-26T14:51:46.603Z"
+  }),
+  DataFactory({
+    id: "6",
+    title: "Cho tui xin 1 ve di tuoi tho nha kakaa",
+    price: 142000,
+    url: "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
+    thumb:
+      "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
+    stocks: 1100,
+    author: "Tống Mạc",
+    category: "Văn học",
+    provider: "Tống Mạc",
+    publisher: "Tống Mạc",
+    createdAt: "2021-04-26T14:51:46.603Z",
+    updatedAt: "2021-04-26T14:51:46.603Z"
   })
 ]
 
 interface IOwnProps {}
+type Order = "asc" | "desc"
 
 const ProductList: React.FC<IOwnProps> = props => {
   const classes = useStyles()
-  const [order, setOrder] = useState<string>("")
-  const [orderBy, setOrderBy] = useState<string>("")
-  const [selected, setSelected] = useState<any>([])
+  const [order, setOrder] = useState<Order>("asc")
+  const [orderBy, setOrderBy] = useState<keyof IDataFactory>("title")
+  const [selected, setSelected] = useState<string[]>([])
   const [page, setPage] = useState<number>(0)
   const [dense, setDense] = useState<boolean>(false)
   const [rowsPerPage, setRowsPerPage] = useState<number>(5)
 
-  const handleRequestSort = (event: React.MouseEvent, property: string) => {
+  const history = useHistory()
+
+  const handleRequestSort = (
+    event: React.MouseEvent<unknown>,
+    property: keyof IDataFactory
+  ) => {
     const isAsc = orderBy === property && order === "asc"
     setOrder(isAsc ? "desc" : "asc")
     setOrderBy(property)
   }
 
-  const handleSelectAllClick = event => {
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       const newSelecteds = rows.map(n => n.title)
       setSelected(newSelecteds)
@@ -137,9 +182,9 @@ const ProductList: React.FC<IOwnProps> = props => {
     setSelected([])
   }
 
-  const handleClick = (event, name) => {
+  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
     const selectedIndex = selected.indexOf(name)
-    let newSelected = []
+    let newSelected = [] as string[]
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, name)
@@ -157,16 +202,18 @@ const ProductList: React.FC<IOwnProps> = props => {
     setSelected(newSelected)
   }
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
   }
 
-  const handleChangeRowsPerPage = event => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10))
     setPage(0)
   }
 
-  const handleChangeDense = event => {
+  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDense(event.target.checked)
   }
 
@@ -207,7 +254,7 @@ const ProductList: React.FC<IOwnProps> = props => {
                     const labelId = `enhanced-table-checkbox-${index}`
                     return (
                       <TableRow
-                        style={{cursor:'pointer'}}
+                        style={{ cursor: "pointer" }}
                         hover
                         onClick={event => handleClick(event, row.title)}
                         role="checkbox"
@@ -238,6 +285,16 @@ const ProductList: React.FC<IOwnProps> = props => {
                         <TableCell>{row.author}</TableCell>
                         <TableCell>{row.publisher}</TableCell>
                         <TableCell>{row.stocks}</TableCell>
+                        <TableCell>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            component={Link}
+                            to={`${PATH.PRODUCT}/${row.id}`}
+                          >
+                            DETAIL
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     )
                   })}
@@ -249,10 +306,37 @@ const ProductList: React.FC<IOwnProps> = props => {
               </TableBody>
             </Table>
           </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[2, 5, 10, 15]}
+            count={rows.length as number}
+            rowsPerPage={rowsPerPage as number}
+            page={page as number}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
         </Paper>
+        <FormControlLabel
+          control={<Switch checked={dense} onChange={handleChangeDense} />}
+          label="Dense padding"
+        />
       </div>
     </MainLayout>
   )
 }
+
+// ActionsComponent?: React.ElementType<TablePaginationActionsProps>;
+// backIconButtonText?: string;
+// backIconButtonProps?: Partial<IconButtonProps>;
+// count: number;
+// labelDisplayedRows?: (paginationInfo: LabelDisplayedRowsArgs) => React.ReactNode;
+// labelRowsPerPage?: React.ReactNode;
+// nextIconButtonProps?: Partial<IconButtonProps>;
+// nextIconButtonText?: string;
+// onChangePage: (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => void;
+// onChangeRowsPerPage?: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
+// page: number;
+// rowsPerPage: number;
+// rowsPerPageOptions?: Array<number | { value: number; label: string }>;
+// SelectProps?: Partial<SelectProps>;
 
 export default ProductList
