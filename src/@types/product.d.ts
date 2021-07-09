@@ -1,16 +1,18 @@
 interface IProduct {
-  id: string
-  title: string
-  description: string
-  imgUrl: string
-  thumbUrl: string
-  quantity: number
-  price: number
-  provider: string
-  publisher: string
-  stock: number
-  category: string
-  author: string
+  id: string,
+  _id: string,
+  title: string,
+  price: number,
+  description: string,
+  url: string,
+  thumb: string,
+  stocks: number,
+  createdAt: string,
+  updatedAt: string,
+  author: IAuthor['name'] ,
+  category: ICategory['name'],
+  provider: IProvider['name'],
+  publisher: IPublisher['name'],
 }
 
 interface IResponseGetProductApi extends IResponse {
