@@ -4,14 +4,14 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import type {Padding as PaddingType} from '@material-ui/core'
 
 const headCells = [
-    { id: 'title', numeric: false, disablePadding: true, label: 'Title' },
-    { id: 'image', numeric: true, disablePadding: false, label: 'Thumb' },
-    { id: 'price', numeric: true, disablePadding: false, label: 'Price (VND)' },
-    { id: 'category', numeric: true, disablePadding: false, label: 'Category' },
-    { id: 'author', numeric: true, disablePadding: false, label: 'Author' },
-    { id: 'publisher', numeric: true, disablePadding: false, label: 'Publisher' },
-    { id: 'stocks', numeric: true, disablePadding: false, label: 'Stocks' },
-    { id: 'viewDetail', numeric: true, disablePadding: false, label: 'Detail' },
+    { id: 'title', numeric: false, disablePadding: true, label: 'Title', canSort:true },
+    { id: 'image', numeric: true, disablePadding: false, label: 'Image',canSort:false },
+    { id: 'price', numeric: true, disablePadding: false, label: 'Price (VND)' ,canSort:true},
+    { id: 'category', numeric: true, disablePadding: false, label: 'Category' ,canSort:false},
+    { id: 'author', numeric: true, disablePadding: false, label: 'Author' ,canSort:false},
+    { id: 'publisher', numeric: true, disablePadding: false, label: 'Publisher',canSort:false },
+    { id: 'stocks', numeric: true, disablePadding: false, label: 'Stocks',canSort:true },
+    { id: 'viewDetail', numeric: true, disablePadding: false, label: 'Detail',canSort:false },
 
 
 ];
@@ -55,7 +55,7 @@ export const  EnhancedTableHead: React.FC<IEnhancedTableHead> = (props)  => {
               sortDirection={orderBy === headCell.id! ? order as TSortDirection : false as TSortDirection}
             >
               <TableSortLabel
-                active={orderBy === headCell.id}
+                active={headCell.canSort ? true : false}
                 direction={orderBy === headCell.id! ? order as TDirection :  'desc' as TDirection}
                 onClick={createSortHandler(headCell.id)}
               >

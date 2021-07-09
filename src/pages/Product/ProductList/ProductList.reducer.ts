@@ -13,8 +13,9 @@ export const ProductListReducer = (state = initialState, action) =>
         draft.loading = true
         break
       case types.GET_PRODUCT_LIST_SUCCESS:
+        
         draft.loading = false
-        draft.productList = action.payload.data.products
+        draft.productList = action.payload.data
         break
       case types.GET_PRODUCT_LIST_FAILED:
         draft.loading = false

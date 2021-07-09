@@ -22,12 +22,16 @@ import { getComparator } from "../../../helpers/comparator"
 
 import { Link, useHistory } from "react-router-dom"
 import { PATH } from "../../../constants/paths"
+import { useThunkDispatch } from "../../../hooks/useThunkDispatch"
+import { useEffect } from "react"
+import { getProductList } from "./ProductList.thunks"
+import { useAppSelector } from "../../../hooks/useAppSelector"
 
 interface IDataFactory {
   id: string
   title: string
   price: number
-  //description?: string
+  description: string
   url: string
   thumb: string
   stocks: number
@@ -44,7 +48,7 @@ function DataFactory(payload: IDataFactory) {
     id: payload.id,
     title: payload.title,
     price: payload.price,
-    //description: payload.description,
+    description: payload.description,
     url: payload.url,
     thumb: payload.thumb,
     stocks: payload.stocks,
@@ -57,98 +61,6 @@ function DataFactory(payload: IDataFactory) {
   }
 }
 
-const rows = [
-  DataFactory({
-    id: "1",
-    title: "Cho tui",
-    price: 3000,
-    url: "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    thumb:
-      "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    stocks: 100,
-    author: "Tống Mạc",
-    category: "Văn học",
-    provider: "Tống Mạc",
-    publisher: "Tống Mạc",
-    createdAt: "2021-04-26T14:51:46.603Z",
-    updatedAt: "2021-04-26T14:51:46.603Z"
-  }),
-  DataFactory({
-    id: "2",
-    title: "Cho tui xin ",
-    price: 4000,
-    url: "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    thumb:
-      "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    stocks: 100,
-    author: "Tống Mạc",
-    category: "Văn học",
-    provider: "Tống Mạc",
-    publisher: "Tống Mạc",
-    createdAt: "2021-04-26T14:51:46.603Z",
-    updatedAt: "2021-04-26T14:51:46.603Z"
-  }),
-  DataFactory({
-    id: "3",
-    title: "Cho tui xin 1 ve di",
-    price: 5000,
-    url: "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    thumb:
-      "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    stocks: 100,
-    author: "Tống Mạc",
-    category: "Văn học",
-    provider: "Tống Mạc",
-    publisher: "Tống Mạc",
-    createdAt: "2021-04-26T14:51:46.603Z",
-    updatedAt: "2021-04-26T14:51:46.603Z"
-  }),
-  DataFactory({
-    id: "4",
-    title: "Cho tui xin 1 ve di tuoi tho",
-    price: 2000,
-    url: "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    thumb:
-      "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    stocks: 100,
-    author: "Tống Mạc",
-    category: "Văn học",
-    provider: "Tống Mạc",
-    publisher: "Tống Mạc",
-    createdAt: "2021-04-26T14:51:46.603Z",
-    updatedAt: "2021-04-26T14:51:46.603Z"
-  }),
-  DataFactory({
-    id: "5",
-    title: "Cho tui xin 1 ve di tuoi tho heheheheheh",
-    price: 12000,
-    url: "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    thumb:
-      "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    stocks: 4100,
-    author: "Tống Mạc",
-    category: "Văn học",
-    provider: "Tống Mạc",
-    publisher: "Tống Mạc",
-    createdAt: "2021-04-26T14:51:46.603Z",
-    updatedAt: "2021-04-26T14:51:46.603Z"
-  }),
-  DataFactory({
-    id: "6",
-    title: "Cho tui xin 1 ve di tuoi tho nha kakaa",
-    price: 142000,
-    url: "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    thumb:
-      "https://res.cloudinary.com/codingwithvudang/image/upload/v1619449151/mfulfsji4qotpk7g7hlb.jpg",
-    stocks: 1100,
-    author: "Tống Mạc",
-    category: "Văn học",
-    provider: "Tống Mạc",
-    publisher: "Tống Mạc",
-    createdAt: "2021-04-26T14:51:46.603Z",
-    updatedAt: "2021-04-26T14:51:46.603Z"
-  })
-]
 
 interface IOwnProps {}
 type Order = "asc" | "desc"
@@ -156,13 +68,26 @@ type Order = "asc" | "desc"
 const ProductList: React.FC<IOwnProps> = props => {
   const classes = useStyles()
   const [order, setOrder] = useState<Order>("asc")
-  const [orderBy, setOrderBy] = useState<keyof IDataFactory>("title")
+  const [orderBy, setOrderBy] = useState<keyof IProduct>("title")
   const [selected, setSelected] = useState<string[]>([])
   const [page, setPage] = useState<number>(0)
   const [dense, setDense] = useState<boolean>(false)
   const [rowsPerPage, setRowsPerPage] = useState<number>(5)
-
+  
   const history = useHistory()
+  const dispatch = useThunkDispatch();
+  const {productList} = useAppSelector(state => state.productList)
+
+  useEffect(() => {
+    dispatch(getProductList())
+  },[])
+
+  console.log('====================================');
+  console.log(productList);
+  console.log('====================================');
+
+
+
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -175,7 +100,7 @@ const ProductList: React.FC<IOwnProps> = props => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map(n => n.title)
+      const newSelecteds = productList.map(n => n.title)
       setSelected(newSelecteds)
       return
     }
@@ -220,7 +145,7 @@ const ProductList: React.FC<IOwnProps> = props => {
   const isSelected = name => selected.indexOf(name) !== -1
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
+    rowsPerPage - Math.min(rowsPerPage, productList.length - page * rowsPerPage)
 
   return (
     <MainLayout>
@@ -244,10 +169,10 @@ const ProductList: React.FC<IOwnProps> = props => {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={rows.length}
+                rowCount={productList.length}
               />
               <TableBody>
-                {stableSort(rows, getComparator(order, orderBy))
+                {stableSort(productList as IProduct[], getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.title)
@@ -256,7 +181,7 @@ const ProductList: React.FC<IOwnProps> = props => {
                       <TableRow
                         style={{ cursor: "pointer" }}
                         hover
-                        onClick={event => handleClick(event, row.title)}
+                        onClick={event => handleClick(event, row.title as any)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
@@ -278,19 +203,19 @@ const ProductList: React.FC<IOwnProps> = props => {
                           {row.title}
                         </TableCell>
                         <TableCell>
-                          <Avatar style={{}} src={row.thumb} />
+                          <Avatar style={{}} src={row.thumb as any} />
                         </TableCell>
                         <TableCell>{row.price}</TableCell>
-                        <TableCell>{row.category}</TableCell>
-                        <TableCell>{row.author}</TableCell>
-                        <TableCell>{row.publisher}</TableCell>
+                        <TableCell>{row.category['name'] as string}</TableCell>
+                        <TableCell>{row.author['name'] as string}</TableCell>
+                        <TableCell>{row.publisher['name'] as string}</TableCell>
                         <TableCell>{row.stocks}</TableCell>
                         <TableCell>
                           <Button
                             variant="contained"
                             color="primary"
                             component={Link}
-                            to={`${PATH.PRODUCT}/${row.id}`}
+                            to={`${PATH.PRODUCT}/${row._id }`}
                           >
                             DETAIL
                           </Button>
@@ -308,7 +233,7 @@ const ProductList: React.FC<IOwnProps> = props => {
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[2, 5, 10, 15]}
-            count={rows.length as number}
+            count={productList.length as number}
             rowsPerPage={rowsPerPage as number}
             page={page as number}
             onChangePage={handleChangePage}

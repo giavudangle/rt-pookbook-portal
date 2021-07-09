@@ -2,59 +2,36 @@ import {
   HTTP_RESPONSE_CODE,
   HTTP_RESPONSE_MESSAGE,
   HTTP_RESPONSE_STATUS
-} from "src/constants/http"
+} from "../constants/http"
+import { rootApi } from "./root.api"
 
-const mockData: IProduct[] = [
-  {
-    id: "test",
-    title: "test",
-    description: "test",
-    imgUrl: "test",
-    thumbUrl: "test",
-    quantity: 1,
-    price: 1,
-    provider: "test",
-    publisher: "test",
-    stock: 1,
-    category: "test",
-    author: "test"
-  }
-]
+// Dispatch
+// Thunk start
+// Thunk call to api layer
+// Api layer return data get from api
+// -> Action start
+// -> Reducer reduce state
 
 export const getProductListApi = (): Promise<IResponseGetProductApi> => {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({
+    rootApi.get(`/products`)
+      .then(response => resolve({
         data: {
-          products: mockData
+          products: response.data
         },
-        message: "Ok",
-        code: 200,
-        status: "Ok"
-      })
-    }, 1000)
-    if (!resolve) reject()
+        message: HTTP_RESPONSE_MESSAGE.SUCCESS,
+        code: HTTP_RESPONSE_CODE.SUCCESS,
+        status: HTTP_RESPONSE_STATUS.SUCCESS
+      }))
   })
 }
 
 export const getProductApi = (
   id: string
-): Promise<IResponseGetProductItemApi> => {
+): Promise<void> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      const product = mockData.find(p => p.id === id)
-      if (product) {
-        resolve({
-          data: {
-            product
-          },
-          message: HTTP_RESPONSE_MESSAGE.SUCCESS,
-          code: HTTP_RESPONSE_CODE.SUCCESS,
-          status: HTTP_RESPONSE_STATUS.SUCCESS
-        })
-      } else {
-        reject(new Error(HTTP_RESPONSE_MESSAGE.FAILED))
-      }
+      resolve()
     })
   })
 }

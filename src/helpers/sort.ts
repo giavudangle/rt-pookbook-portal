@@ -1,6 +1,8 @@
 
 
 export function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
+  console.log(array);
+  
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
