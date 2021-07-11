@@ -206,9 +206,9 @@ const ProductList: React.FC<IOwnProps> = props => {
                           <Avatar style={{}} src={row.thumb as any} />
                         </TableCell>
                         <TableCell>{row.price}</TableCell>
-                        <TableCell>{row.category['name'] as string}</TableCell>
-                        <TableCell>{row.author['name'] as string}</TableCell>
-                        <TableCell>{row.publisher['name'] as string}</TableCell>
+                        <TableCell>{row.category}</TableCell>
+                        <TableCell>{row.author}</TableCell>
+                        <TableCell>{row.publisher}</TableCell>
                         <TableCell>{row.stocks}</TableCell>
                         <TableCell>
                           <Button
