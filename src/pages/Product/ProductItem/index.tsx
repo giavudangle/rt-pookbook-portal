@@ -8,7 +8,9 @@ import {
   AccountCircle,
   AddShoppingCart,
   History,
-  Loyalty
+  Loyalty,
+  Image,
+  Book
 } from "@material-ui/icons"
 
 import {
@@ -24,8 +26,21 @@ import {
   Button,
   Divider,
   MenuItem,
-  InputAdornment
+  InputAdornment,
+  Input,
+  FormControl
 } from "@material-ui/core"
+import { useRef } from "react"
+import { CircularProgress } from "@material-ui/core"
+
+import CustomCircularUnderload from "../../../components/Loading/CustomCircularUnderload"
+import CircularUnderLoad from "../../../components/Loading/CustomCircularUnderload"
+import { useEffect } from "react"
+import { useThunkDispatch } from "../../../hooks/useThunkDispatch"
+import { getProductItem } from "./ProductItem.thunks"
+import { useAppSelector } from "../../../hooks/useAppSelector"
+import { ClassNameMap } from "@material-ui/core/styles/withStyles"
+import { InputProps } from "@material-ui/core"
 
 const categories = [
   {
@@ -58,97 +73,102 @@ const authors = [
 ]
 
 function ProductItem(props: any) {
-  const params = useParams()
+  const params = useParams<any | null>()
+  const { productItem } = useAppSelector(state => state.productItem)
   const classes = useStyles()
-  const [category, setCategory] = React.useState("Sách văn học")
-  const [author, setAuthor] = React.useState("Tống Mạc")
-  const [publisher, setPublisher] = React.useState("Tống Mạc")
-  const [provider, setProvider] = React.useState("Tống Mạc")
 
-  const handleChangeCategory = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCategory(event.target.value)
-  }
+  // const _handleSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (event.target.files && event.target.files[0]) {
+  //     let img = event.target.files[0]
+  //     setImage(URL.createObjectURL(img))
+  //   }
+  // }
 
-  const handleChangeAuthor = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAuthor(event.target.value)
-  }
+  const [loading, setLoading] = React.useState(false)
+  const dispatch = useThunkDispatch()
 
-  const handleChangePublisher = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPublisher(event.target.value)
-  }
+  useEffect(() => {
+    dispatch(getProductItem(params.id as string))
+  }, [params.id!])
 
-  const handleChangeProvider = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setProvider(event.target.value)
-  }
-
-  return (
+  return !loading ? (
     <MainLayout>
       <CssBaseline />
-      <Grid container spacing={3}>
-        <Grid item xs={5}>
+      <Grid container spacing={1}>
+        <Grid item lg={5} xs={1} sm={6}>
           <Paper className={classes.paper}>
-            <img
-              width="100%"
-              height="100%"
-              src="https://scontent.fpnh22-3.fna.fbcdn.net/v/t1.6435-9/151284066_207254161142817_5812038792384707893_n.png?_nc_cat=105&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=GqSAE84ZaJoAX9hDuSm&_nc_ht=scontent.fpnh22-3.fna&oh=e335456012a78fdc455d02b038eb4484&oe=60ED45B1"
-            />
+            <Typography>Product Image</Typography>
+            <div>
+              <img width="100%" height="auto" src={productItem?.url} />
+            </div>
           </Paper>
         </Grid>
-        <Grid item xs={7}>
+        <Grid item lg={7} xs={7} sm={6}>
           <Paper className={classes.paper}>
             <Typography>Product Detail</Typography>
-
-            <form className={classes.formContainer}>
+            <FormControl
+              style={{ display: "flex", flexDirection: "column", margin: 6 }}
+            >
               <TextField
                 disabled
-                style={{ margin: 20 }}
                 id="id"
                 label="ID"
-                value="1"
+                value={productItem?._id}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <Loyalty />
                     </InputAdornment>
-                  )
+                  ),
+                  className: classes.textFields
                 }}
               />
               <TextField
-                style={{ margin: 20 }}
+                disabled
+                className={classes.fieldContainer}
                 id="title"
-                label="Title"
-                value="Cho tôi xin 1 vé đi tuổi thơ"
+                label="Book Title"
+                value={productItem?.title}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <BookOutlined />
                     </InputAdornment>
-                  )
+                  ),
+                  className: classes.textFields
                 }}
               />
               <TextField
+                disabled
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <AttachMoney />
                     </InputAdornment>
-                  )
+                  ),
+                  className: classes.textFields
                 }}
-                style={{ margin: 20 }}
                 id="price"
                 label="Price"
-                value={300000}
+                value={productItem?.price}
               />
               <TextField
-                style={{ margin: 20 }}
+                disabled
+                style={{ paddingTop: 20 }}
+                multiline
+                InputProps={{
+                  className: classes.textFields
+                }}
+                fullWidth
+                id="des"
+                label="Description"
+                value={productItem?.description}
+              />
+              <TextField
+                disabled
                 id="standard-select-currency"
-                select
                 label="Category"
-                value={category}
-                onChange={handleChangeCategory}
-                helperText="Please select category"
+                value={productItem?.category}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -165,19 +185,17 @@ function ProductItem(props: any) {
               </TextField>
 
               <TextField
-                style={{ margin: 20 }}
+                disabled
                 id="standard-select-author"
-                select
                 label="Author"
-                value={author}
-                onChange={handleChangeAuthor}
-                helperText="Please select author"
+                value={productItem?.author}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <AccountCircle />
                     </InputAdornment>
-                  )
+                  ),
+                  className: classes.textFields
                 }}
               >
                 {authors.map(option => (
@@ -187,19 +205,18 @@ function ProductItem(props: any) {
                 ))}
               </TextField>
               <TextField
-                style={{ margin: 20 }}
+                disabled
                 id="standard-select-publisher"
-                select
+                aria-readonly
                 label="Publisher"
-                value={publisher}
-                onChange={handleChangePublisher}
-                helperText="Please select publisher"
+                value={productItem?.publisher}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <AccountCircle />
                     </InputAdornment>
-                  )
+                  ),
+                  className: classes.textFields
                 }}
               >
                 {authors.map(option => (
@@ -209,19 +226,18 @@ function ProductItem(props: any) {
                 ))}
               </TextField>
               <TextField
-                style={{ margin: 20 }}
+                disabled
                 id="standard-select-publisher"
-                select
+                aria-readonly
                 label="Provider"
-                value={provider}
-                onChange={handleChangeProvider}
-                helperText="Please select provider"
+                value={productItem?.provider}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <AccountCircle />
                     </InputAdornment>
-                  )
+                  ),
+                  className: classes.textFields
                 }}
               >
                 {authors.map(option => (
@@ -231,14 +247,15 @@ function ProductItem(props: any) {
                 ))}
               </TextField>
               <TextField
+                disabled
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <AddShoppingCart />
                     </InputAdornment>
-                  )
+                  ),
+                  className: classes.textFields
                 }}
-                style={{ margin: 20 }}
                 id="stocks"
                 label="Stocks"
                 value={9999}
@@ -250,9 +267,9 @@ function ProductItem(props: any) {
                     <InputAdornment position="start">
                       <History />
                     </InputAdornment>
-                  )
+                  ),
+                  className: classes.textFields
                 }}
-                style={{ margin: 20 }}
                 id="createAt"
                 label="Created At"
                 value="2021-04-26T14:51:46.603Z"
@@ -264,35 +281,21 @@ function ProductItem(props: any) {
                     <InputAdornment position="start">
                       <History />
                     </InputAdornment>
-                  )
+                  ),
+                  className: classes.textFields
                 }}
-                style={{ margin: 20 }}
                 id="updatedAt"
                 label="Updated At"
                 value="2021-04-26T14:51:46.603Z"
               />
               <Divider />
-              <div className={classes.btnContainer}>
-                <Button
-                  className={classes.btn}
-                  variant="contained"
-                  color="primary"
-                >
-                  Save
-                </Button>
-                <Button
-                  className={classes.btn}
-                  variant="contained"
-                  color="secondary"
-                >
-                  Cancel
-                </Button>
-              </div>
-            </form>
+            </FormControl>
           </Paper>
         </Grid>
       </Grid>
     </MainLayout>
+  ) : (
+    <CircularUnderLoad />
   )
 }
 

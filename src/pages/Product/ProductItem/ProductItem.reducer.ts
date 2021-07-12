@@ -14,6 +14,14 @@ export const productItemReducer = (state = initialState, action) =>
         draft.productItem = null
         break
       case types.GET_PRODUCT_ITEM_SUCCESS:
+        action.payload.data.product.category =
+          action.payload.data.product.category.name
+        action.payload.data.product.author =
+          action.payload.data.product.author.name
+        action.payload.data.product.publisher =
+          action.payload.data.product.publisher.name
+        action.payload.data.product.provider =
+          action.payload.data.product.provider.name
         draft.loading = false
         draft.productItem = action.payload.data.product
         break

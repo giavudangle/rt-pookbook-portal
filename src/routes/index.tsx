@@ -7,7 +7,7 @@ import useCustomHistory from "../utils/useCustomHistory"
 
 const Routes = () => {
   return (
-    <Router history={useCustomHistory}> 
+    <Router history={useCustomHistory}>
       <HomeRoutes />
       <ProductRoutes />
       <LoginRoutes />

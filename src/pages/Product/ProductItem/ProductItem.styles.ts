@@ -1,36 +1,57 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core"
 import styled from "styled-components"
 
-export const useStyles = makeStyles((theme : Theme) => 
+export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root:{
-      flexGrow:1
+    root: {
+      flexGrow: 1
     },
-    paper:{
-      padding:theme.spacing(2),
-      textAlign:'left',
-      color: theme.palette.text.secondary
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: "left",
+      color: theme.palette.text.secondary,
+      marginTop: 10
     },
-    formContainer:{
+    imageContainer: {},
+    formContainer: {
       display: "flex",
-      flexDirection:'column',
-      alignItems:'stretch',
-      margin:20
+      flexDirection: "column",
+      alignItems: "stretch",
+      margin: 4,
+      justifyContent: "center"
     },
-    btnContainer:{
+    btnContainer: {
       display: "flex",
-      flexDirection:'row',
-      alignItems:'stretch',
-      justifyContent:'space-between',      
+      flexDirection: "row",
+      alignItems: "stretch",
+      justifyContent: "space-between"
     },
-    btn:{
-      width:'100%',
+    btn: {
+      width: "100%",
       marginTop: 10,
-      marginRight:10
+      marginRight: 10
     },
-    textFields :{
-      marginTop:10,
-      marginRight:10
+    textFields: {
+      marginTop: 10,
+      padding: 10
+    },
+    imagePickerContainer: {
+      display: "flex",
+      alignItems: "center",
+      flexDirection: "row",
+      justifyContent: "center",
+      backgroundColor: "#b0e0e6",
+      padding: 10
+    },
+    fieldContainer: {
+      margin: 10
+    },
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2)
     }
   })
 )

@@ -13,12 +13,15 @@ export const ProductListReducer = (state = initialState, action) =>
         draft.loading = true
         break
       case types.GET_PRODUCT_LIST_SUCCESS:
-        action.payload.data.map(e => {
-          e.provider = e.provider.name,
-          e.publisher= e.publisher.name,
-          e.author = e.author.name,
-          e.category = e.category.name
-        })
+        action.payload.data.map(
+          e => (
+            (e.provider = e.provider.name),
+            (e.publisher = e.publisher.name),
+            (e.author = e.author.name),
+            (e.category = e.category.name)
+          )
+        )
+
         draft.loading = false
         draft.productList = action.payload.data
         break

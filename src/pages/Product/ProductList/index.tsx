@@ -13,20 +13,30 @@ import {
   FormControlLabel,
   Switch,
   TablePagination,
-  Button
+  Button,
+  Slide
 } from "@material-ui/core"
 
+import {} from "@material-ui/core/colors"
 import { EnhancedTableToolbar, EnhancedTableHead } from "./components"
 import { stableSort } from "../../../helpers/sort"
 import { getComparator } from "../../../helpers/comparator"
 
-import { Link, useHistory } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { PATH } from "../../../constants/paths"
 import { useThunkDispatch } from "../../../hooks/useThunkDispatch"
 import { useEffect } from "react"
 import { getProductList } from "./ProductList.thunks"
 import { useAppSelector } from "../../../hooks/useAppSelector"
 
+import {
+  SUCCESS_PALETTE,
+  ERROR_PALETTE,
+  INFO_PALETTE
+} from "../../../utils/useCustomColor"
+import { useCustomButton } from "../../../hooks/useAppStyles"
+import CustomDialog from "../../../components/Dialog/Dialog"
+import { TransitionProps } from "@material-ui/core/transitions/transition"
 interface IDataFactory {
   id: string
   title: string
@@ -61,9 +71,15 @@ function DataFactory(payload: IDataFactory) {
   }
 }
 
-
 interface IOwnProps {}
 type Order = "asc" | "desc"
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & { children?: React.ReactElement<any, any> },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />
+})
 
 const ProductList: React.FC<IOwnProps> = props => {
   const classes = useStyles()
@@ -73,21 +89,15 @@ const ProductList: React.FC<IOwnProps> = props => {
   const [page, setPage] = useState<number>(0)
   const [dense, setDense] = useState<boolean>(false)
   const [rowsPerPage, setRowsPerPage] = useState<number>(5)
-  
-  const history = useHistory()
-  const dispatch = useThunkDispatch();
-  const {productList} = useAppSelector(state => state.productList)
+
+  const dispatch = useThunkDispatch()
+  const { productList } = useAppSelector(state => state.productList)
+
+  const btnClasses = useCustomButton()
 
   useEffect(() => {
     dispatch(getProductList())
-  },[])
-
-  console.log('====================================');
-  console.log(productList);
-  console.log('====================================');
-
-
-
+  }, [])
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -147,6 +157,23 @@ const ProductList: React.FC<IOwnProps> = props => {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, productList.length - page * rowsPerPage)
 
+  const makeStylesButton = (bgColor: string, txtColor: string) => {
+    return {
+      backgroundColor: bgColor,
+      color: txtColor
+    }
+  }
+
+  const [openDialog, setOpenDiaglog] = React.useState(false)
+
+  const handleClickOpen = () => {
+    setOpenDiaglog(true)
+  }
+
+  const handleClose = () => {
+    setOpenDiaglog(false)
+  }
+
   return (
     <MainLayout>
       <div className={classes.root}>
@@ -172,7 +199,7 @@ const ProductList: React.FC<IOwnProps> = props => {
                 rowCount={productList.length}
               />
               <TableBody>
-                {stableSort(productList as IProduct[], getComparator(order, orderBy))
+                {stableSort(productList as any, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.title)
@@ -213,12 +240,52 @@ const ProductList: React.FC<IOwnProps> = props => {
                         <TableCell>
                           <Button
                             variant="contained"
-                            color="primary"
+                            style={makeStylesButton(INFO_PALETTE.MAIN, "#FFF")}
                             component={Link}
-                            to={`${PATH.PRODUCT}/${row._id }`}
+                            to={`${PATH.PRODUCT}/${row._id}`}
                           >
                             DETAIL
                           </Button>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            style={makeStylesButton(
+                              SUCCESS_PALETTE.MAIN,
+                              "#FFF"
+                            )}
+                            className={btnClasses.successButton}
+                            variant="contained"
+                            component={Link}
+                            to={`${PATH.PRODUCT}/edit/${row._id}`}
+                          >
+                            EDIT
+                          </Button>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            style={makeStylesButton(ERROR_PALETTE.MAIN, "#FFF")}
+                            className={btnClasses.errorButton}
+                            variant="contained"
+                            onClick={handleClickOpen}
+                          >
+                            DELETE
+                          </Button>
+                          <CustomDialog
+                            open={openDialog}
+                            transComp={Transition}
+                            keepMounted={true}
+                            onClose={handleClose}
+                            labelledBy="alert-dialog-slide-title"
+                            describedBy="alert-dialog-slide-description"
+                            titleId="alert-dialog-slide-title"
+                            contentId="alert-dialog-slide-description"
+                            dialogTitle={`Are you sure to delete ${row.title}`}
+                            dialogContent="This item will be delete immediately. You can't undo this action."
+                            onReject={handleClose}
+                            onResolve={handleClose}
+                            btnResolveName="Resolve"
+                            btnRejectName="Reject"
+                          />
                         </TableCell>
                       </TableRow>
                     )

@@ -29,27 +29,26 @@ import { Switch, Route, Link } from "react-router-dom"
 
 export const mainListItems = (
   <div>
-      <ListItem component={Link} to='/' button>
-        <ListItemIcon>
-          <DashboardIcon />
-        </ListItemIcon>
-        <ListItemText primary="Dashboard" />
-      </ListItem>
+    <ListItem component={Link} to="/" button>
+      <ListItemIcon>
+        <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Dashboard" />
+    </ListItem>
 
-   
-      <ListItem button component={Link} to='/product'>
-        <ListItemIcon>
-          <BookIcon />
-        </ListItemIcon>
-        <ListItemText primary="Products" />
-      </ListItem>
+    <ListItem button component={Link} to="/product">
+      <ListItemIcon>
+        <BookIcon />
+      </ListItemIcon>
+      <ListItemText primary="Products" />
+    </ListItem>
 
-      <ListItem button component={Link} to='/orders'>
-        <ListItemIcon>
-          <ShoppingCartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Orders" />
-      </ListItem>
+    <ListItem button component={Link} to="/orders">
+      <ListItemIcon>
+        <ShoppingCartIcon />
+      </ListItemIcon>
+      <ListItemText primary="Orders" />
+    </ListItem>
 
     <ListItem button>
       <ListItemIcon>

@@ -5,8 +5,9 @@ import { PATH } from "../constants/paths"
 import Loading from "../components/Loading/Loading"
 const ProductList = lazy(() => import("../pages/Product/ProductList"))
 const ProductItem = lazy(() => import("../pages/Product/ProductItem"))
-
-
+const ProductItemEdit = lazy(
+  () => import("../pages/Product/ProductItem/ProductItemEdit")
+)
 
 export default function ProductRoutes() {
   return (
@@ -16,7 +17,7 @@ export default function ProductRoutes() {
         path={PATH.PRODUCT}
         component={() => (
           <Suspense fallback={<Loading />}>
-            <ProductList/>
+            <ProductList />
           </Suspense>
         )}
       />
@@ -24,13 +25,20 @@ export default function ProductRoutes() {
         exact
         path={`${PATH.PRODUCT}/:id`}
         component={() => (
-          <Suspense fallback={<Loading/>}>
-            <ProductItem/>
+          <Suspense fallback={<Loading />}>
+            <ProductItem />
           </Suspense>
         )}
-      
+      />
+      <AuthenticatedGuard
+        exact
+        path={`${PATH.PRODUCT}/edit/:id`}
+        component={() => (
+          <Suspense fallback={<Loading />}>
+            <ProductItemEdit />
+          </Suspense>
+        )}
       />
     </Switch>
   )
 }
-

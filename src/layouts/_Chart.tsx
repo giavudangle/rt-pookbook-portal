@@ -1,27 +1,34 @@
-import React from 'react';
-import { useTheme } from '@material-ui/core/styles';
-import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
-import Title from './_Title';
+import React from "react"
+import { useTheme } from "@material-ui/core/styles"
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Label,
+  ResponsiveContainer
+} from "recharts"
+import Title from "./_Title"
 
 // Generate Sales Data
 function createData(time, amount) {
-  return { time, amount };
+  return { time, amount }
 }
 
 const data = [
-  createData('00:00', 0),
-  createData('03:00', 300),
-  createData('06:00', 600),
-  createData('09:00', 800),
-  createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
-  createData('24:00', 4000),
-];
+  createData("00:00", 0),
+  createData("03:00", 300),
+  createData("06:00", 600),
+  createData("09:00", 800),
+  createData("12:00", 1500),
+  createData("15:00", 2000),
+  createData("18:00", 2400),
+  createData("21:00", 2400),
+  createData("24:00", 4000)
+]
 
 export default function Chart() {
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <React.Fragment>
@@ -33,7 +40,7 @@ export default function Chart() {
             top: 16,
             right: 16,
             bottom: 0,
-            left: 24,
+            left: 24
           }}
         >
           <XAxis dataKey="time" stroke={theme.palette.text.secondary} />
@@ -41,14 +48,19 @@ export default function Chart() {
             <Label
               angle={270}
               position="left"
-              style={{ textAnchor: 'middle', fill: theme.palette.text.primary }}
+              style={{ textAnchor: "middle", fill: theme.palette.text.primary }}
             >
               Sales ($)
             </Label>
           </YAxis>
-          <Line type="monotone" dataKey="amount" stroke={theme.palette.primary.main} dot={false} />
+          <Line
+            type="monotone"
+            dataKey="amount"
+            stroke={theme.palette.primary.main}
+            dot={false}
+          />
         </LineChart>
       </ResponsiveContainer>
     </React.Fragment>
-  );
+  )
 }
