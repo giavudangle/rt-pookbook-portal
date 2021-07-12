@@ -1,6 +1,6 @@
 interface IPublisher {
-    id : string,
-    name : string,
-    createdAt : string,
-    updatedAt: string
+  id: string
+  name: string
+  createdAt: string
+  updatedAt: string
 }
