@@ -1,4 +1,4 @@
-interface IActionCreator {
-  type: string
-  payload?: any
+interface IAction<T, P> {
+  readonly type: T
+  readonly payload?: P
 }

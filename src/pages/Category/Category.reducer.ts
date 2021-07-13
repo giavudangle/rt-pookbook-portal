@@ -1,20 +1,34 @@
-import * as types from "./Category.constants"
 import produce from "immer"
+import { WritableDraft } from "immer/dist/internal"
+import * as types from "./Category.constants"
 
-const initialState = {
-  loading: false
+interface ICategoryState {
+  loading: boolean
+  categories: ICategory[]
 }
 
-export const loginReducer = (state = initialState, action: any) =>
+const initialState: ICategoryState = {
+  loading: false,
+  categories: []
+}
+
+type TActions =
+  | types.TActionFetchCategoriesFail
+  | types.TActionFetchCategoriesRequest
+  | types.TActionFetchCategoriesSuccess
+
+export const CategoryReducer = (state = initialState, action: TActions) =>
   produce(state, draft => {
     switch (action.type) {
-      case types.LOGIN_REQUESTED:
+      case types.FETCH_CATEGORIES_REQUESTED:
         draft.loading = true
         break
-      case types.LOGIN_SUCCESS:
+      case types.FETCH_CATEGORIES_SUCCESS:
         draft.loading = false
+        draft.categories = action.payload?.data
+          .categories as WritableDraft<ICategory>[]
         break
-      case types.LOGIN_FAILED:
+      case types.FETCH_CATEGORIES_FAIL:
         draft.loading = false
         break
       default:

@@ -74,7 +74,7 @@ const authors = [
 
 function ProductItem(props: any) {
   const params = useParams<any | null>()
-  const { productItem } = useAppSelector(state => state.productItem)
+  const { productItem } = useAppSelector(state => state.productItemReducer)
   const classes = useStyles()
 
   // const _handleSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {

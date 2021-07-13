@@ -40,7 +40,7 @@ const Login: React.FC = (): JSX.Element => {
 
   const history = useHistory()
   const classes = useStyles()
-  const { loading } = useAppSelector(state => state.login)
+  const { loading } = useAppSelector(state => state.loginReducer)
   const dispatch = useThunkDispatch()
 
   const _handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {

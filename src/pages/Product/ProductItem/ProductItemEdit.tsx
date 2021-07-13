@@ -81,7 +81,9 @@ function ProductItemEdit(props: any) {
   const classes = useStyles()
   const dispatch = useThunkDispatch()
 
-  const { productItem, loading } = useAppSelector(state => state.productItem)
+  const { productItem, loading } = useAppSelector(
+    state => state.productItemReducer
+  )
 
   const { control, handleSubmit, reset, register } = useForm<IProduct>({
     defaultValues: useMemo(() => {
@@ -92,7 +94,7 @@ function ProductItemEdit(props: any) {
 
   useEffect(() => {
     dispatch(getProductItem(params.id as string)).then(res =>
-      reset({ ...res.payload.data.product })
+      reset({ ...res.payload?.data.product })
     )
   }, [params.id!])
 
@@ -234,7 +236,6 @@ function ProductItemEdit(props: any) {
               <Controller
                 name="author"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -254,7 +255,6 @@ function ProductItemEdit(props: any) {
               <Controller
                 name="category"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -274,7 +274,6 @@ function ProductItemEdit(props: any) {
               <Controller
                 name="provider"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <TextField
                     {...field}
@@ -295,7 +294,6 @@ function ProductItemEdit(props: any) {
               <Controller
                 name="publisher"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <TextField
                     {...field}

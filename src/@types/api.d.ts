@@ -1,4 +1,4 @@
-interface IResponse {
+interface IHttpResponse {
   data: any
   message: string
   code: number

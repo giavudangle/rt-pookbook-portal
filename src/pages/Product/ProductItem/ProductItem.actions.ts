@@ -1,17 +1,20 @@
+import { AbstractActionFactory } from "../../../helpers/action"
 import * as types from "./ProductItem.constants"
+import {
+  TActionFetchProductItemFail,
+  TActionFetchProductItemSuccess,
+  TActionFetchProductItemRequest
+} from "./ProductItem.constants"
 
-export const getProductItemRequested = () => ({
-  type: types.GET_PRODUCT_ITEM_REQUESTED
-})
+export const fetchProductItemRequested = (): TActionFetchProductItemRequest =>
+  AbstractActionFactory(types.FETCH_PRODUCT_ITEM_REQUESTED, null)
 // Add more type constraint here
-export const getProductItemSuccess = (
-  payload: IResponseGetProductItemApi
-): IResponseGetProductItem => ({
-  type: types.GET_PRODUCT_ITEM_SUCCESS,
-  payload
-})
+export const fetchProductItemSuccess = (
+  payload: IResponseFetchProductItemApi
+): TActionFetchProductItemSuccess =>
+  AbstractActionFactory(types.FETCH_PRODUCT_ITEM_SUCCESS, payload)
 
-export const getProductItemFailed = (payload: string) => ({
-  type: types.GET_PRODUCT_ITEM_FAILED,
-  payload
-})
+export const fetchProductItemFailed = (
+  payload: string
+): TActionFetchProductItemFail =>
+  AbstractActionFactory(types.FETCH_PRODUCT_ITEM_FAILED, payload)

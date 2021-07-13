@@ -26,7 +26,7 @@ import { Link } from "react-router-dom"
 import { PATH } from "../../../constants/paths"
 import { useThunkDispatch } from "../../../hooks/useThunkDispatch"
 import { useEffect } from "react"
-import { getProductList } from "./ProductList.thunks"
+import { fetchProductList } from "./ProductList.thunks"
 import { useAppSelector } from "../../../hooks/useAppSelector"
 
 import {
@@ -91,12 +91,26 @@ const ProductList: React.FC<IOwnProps> = props => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(5)
 
   const dispatch = useThunkDispatch()
-  const { productList } = useAppSelector(state => state.productList)
+  const { productList } = useAppSelector(state => state.productListReducer)
+
+  const { products, pageSize } = productList
+
+  const mutableProductList = JSON.parse(
+    JSON.stringify([...productList.products])
+  ).map((item: any) => {
+    return {
+      ...item,
+      category: item.category.name,
+      provider: item.provider.name,
+      publisher: item.publisher.name,
+      author: item.author.name
+    }
+  })
 
   const btnClasses = useCustomButton()
 
   useEffect(() => {
-    dispatch(getProductList())
+    dispatch(fetchProductList())
   }, [])
 
   const handleRequestSort = (
@@ -110,7 +124,7 @@ const ProductList: React.FC<IOwnProps> = props => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelecteds = productList.map(n => n.title)
+      const newSelecteds = products.map(n => n.title)
       setSelected(newSelecteds)
       return
     }
@@ -155,7 +169,7 @@ const ProductList: React.FC<IOwnProps> = props => {
   const isSelected = name => selected.indexOf(name) !== -1
 
   const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, productList.length - page * rowsPerPage)
+    rowsPerPage - Math.min(rowsPerPage, pageSize - page * rowsPerPage)
 
   const makeStylesButton = (bgColor: string, txtColor: string) => {
     return {
@@ -196,10 +210,13 @@ const ProductList: React.FC<IOwnProps> = props => {
                 orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
-                rowCount={productList.length}
+                rowCount={products.length}
               />
               <TableBody>
-                {stableSort(productList as any, getComparator(order, orderBy))
+                {stableSort(
+                  mutableProductList as any,
+                  getComparator(order, orderBy)
+                )
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     const isItemSelected = isSelected(row.title)
@@ -299,8 +316,8 @@ const ProductList: React.FC<IOwnProps> = props => {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[2, 5, 10, 15]}
-            count={productList.length as number}
+            rowsPerPageOptions={[5, 10, 15]}
+            count={pageSize as number}
             rowsPerPage={rowsPerPage as number}
             page={page as number}
             onChangePage={handleChangePage}
@@ -315,20 +332,5 @@ const ProductList: React.FC<IOwnProps> = props => {
     </MainLayout>
   )
 }
-
-// ActionsComponent?: React.ElementType<TablePaginationActionsProps>;
-// backIconButtonText?: string;
-// backIconButtonProps?: Partial<IconButtonProps>;
-// count: number;
-// labelDisplayedRows?: (paginationInfo: LabelDisplayedRowsArgs) => React.ReactNode;
-// labelRowsPerPage?: React.ReactNode;
-// nextIconButtonProps?: Partial<IconButtonProps>;
-// nextIconButtonText?: string;
-// onChangePage: (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => void;
-// onChangeRowsPerPage?: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-// page: number;
-// rowsPerPage: number;
-// rowsPerPageOptions?: Array<number | { value: number; label: string }>;
-// SelectProps?: Partial<SelectProps>;
 
 export default ProductList

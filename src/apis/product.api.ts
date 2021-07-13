@@ -5,18 +5,21 @@ import {
 } from "../constants/http"
 import { rootApi } from "./root.api"
 
-export const getProductListApi = (): Promise<IResponseGetProductApi> => {
+export const fetchProductListApi = (): Promise<IResponseFetchProductsApi> => {
   return new Promise((resolve, reject) => {
     rootApi
       .get(`/products`)
       .then(response =>
         resolve({
-          data: {
-            products: response.data
-          },
           message: HTTP_RESPONSE_MESSAGE.SUCCESS,
           code: HTTP_RESPONSE_CODE.SUCCESS,
-          status: HTTP_RESPONSE_STATUS.SUCCESS
+          status: HTTP_RESPONSE_STATUS.SUCCESS,
+          data: {
+            page: response.data.page,
+            pageSize: response.data.pageSize,
+            total: response.data.total,
+            products: response.data.data
+          }
         })
       )
       .catch(e => {
@@ -25,19 +28,22 @@ export const getProductListApi = (): Promise<IResponseGetProductApi> => {
   })
 }
 
-export const getProductApi = (
+export const fetchProductApi = (
   id: string
-): Promise<IResponseGetProductItemApi> => {
+): Promise<IResponseFetchProductItemApi> => {
   return new Promise((resolve, reject) => {
-    rootApi.get(`/products/${id}`).then(response =>
-      resolve({
-        data: {
-          product: response.data
-        },
-        message: HTTP_RESPONSE_MESSAGE.SUCCESS,
-        code: HTTP_RESPONSE_CODE.SUCCESS,
-        status: HTTP_RESPONSE_STATUS.SUCCESS
-      })
-    )
+    rootApi
+      .get(`/products/${id}`)
+      .then(response =>
+        resolve({
+          data: {
+            product: response.data
+          },
+          message: HTTP_RESPONSE_MESSAGE.SUCCESS,
+          code: HTTP_RESPONSE_CODE.SUCCESS,
+          status: HTTP_RESPONSE_STATUS.SUCCESS
+        })
+      )
+      .catch(e => reject(e))
   })
 }

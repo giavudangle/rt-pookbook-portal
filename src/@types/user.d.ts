@@ -2,10 +2,10 @@ interface IRequestLogin {
   email: string
   password: string
 }
-interface IResponseLoginApi extends IResponse {
+interface IResponseLoginApi extends IHttpResponse {
   data: {
     access_token: string
   }
 }
 
-interface IResponseLogin extends IActionCreator {}
+interface IResponseLogin extends IAction {}

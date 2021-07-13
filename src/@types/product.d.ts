@@ -9,28 +9,31 @@ interface IProduct {
   stocks: number
   createdAt: string
   updatedAt: string
-  author: IAuthor["name"]
-  category: ICategory["name"]
-  provider: IProvider["name"]
-  publisher: IPublisher["name"]
+  author: IAuthor
+  category: ICategory
+  provider: IProvider
+  publisher: IPublisher
 }
 
-interface IResponseGetProductApi extends IResponse {
+interface IResponseFetchProductsApi extends IHttpResponse {
   data: {
     products: IProduct[]
+    total: number
+    page: number
+    pageSize: number
   }
 }
 
-interface IResponseGetProductPayload extends IActionCreator {
-  payload: IResponseGetProductApi
+interface IResponseFetchProductsPayload extends IAction {
+  payload?: IResponseFetchProductsApi | string
 }
 
-interface IResponseGetProductItemApi extends IResponse {
+interface IResponseFetchProductItemApi extends IHttpResponse {
   data: {
     product: IProduct
   }
 }
 
-interface IResponseGetProductItem extends IActionCreator {
-  payload: IResponseGetProductItemApi
+interface IResponseFetchProductItemPayload extends IAction {
+  payload?: IResponseFetchProductItemApi | string
 }

@@ -1,31 +1,34 @@
+import { AnyAction } from "redux"
 import * as types from "./ProductItem.constants"
 import produce from "immer"
 
-const initialState = {
-  loading: false,
-  productItem: null as IProduct | null
+interface IProductItemState {
+  loading: boolean
+  productItem?: IProduct | null
 }
 
-export const productItemReducer = (state = initialState, action) =>
+const initialState: IProductItemState = {
+  loading: false,
+  productItem: null
+}
+
+type TActions =
+  | types.TActionFetchProductItemFail
+  | types.TActionFetchProductItemRequest
+  | types.TActionFetchProductItemSuccess
+
+export const ProductItemReducer = (state = initialState, action: TActions) =>
   produce(state, draft => {
     switch (action.type) {
-      case types.GET_PRODUCT_ITEM_REQUESTED:
+      case types.FETCH_PRODUCT_ITEM_REQUESTED:
         draft.loading = true
         draft.productItem = null
         break
-      case types.GET_PRODUCT_ITEM_SUCCESS:
-        action.payload.data.product.category =
-          action.payload.data.product.category.name
-        action.payload.data.product.author =
-          action.payload.data.product.author.name
-        action.payload.data.product.publisher =
-          action.payload.data.product.publisher.name
-        action.payload.data.product.provider =
-          action.payload.data.product.provider.name
+      case types.FETCH_PRODUCT_ITEM_SUCCESS:
         draft.loading = false
-        draft.productItem = action.payload.data.product
+        draft.productItem = action.payload?.data.product
         break
-      case types.GET_PRODUCT_ITEM_FAILED:
+      case types.FETCH_PRODUCT_ITEM_FAILED:
         draft.loading = false
         break
       default:

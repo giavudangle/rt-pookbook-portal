@@ -31,7 +31,7 @@ function AuthenticatedGuard(props: Props) {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.app.isAuthenticated
+  isAuthenticated: state.appReducer.isAuthenticated
 })
 
 const mapDispatchToProps = {}

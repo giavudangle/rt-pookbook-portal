@@ -1,9 +1,13 @@
+import { ThunkDispatchType } from "./../../../store/index"
 import * as actions from "./ProductList.actions"
-import { getProductListApi } from "../../../apis/product.api"
+import { fetchProductListApi } from "../../../apis/product.api"
 
-export const getProductList = () => dispatch => {
-  dispatch(actions.getProductListRequested())
-  return getProductListApi()
-    .then(res => dispatch(actions.getProductListSuccess(res.data.products)))
-    .catch(err => Promise.reject(dispatch(actions.getProductListFailed(err))))
+export const fetchProductList = () => async (dispatch: ThunkDispatchType) => {
+  dispatch(actions.fetchProductListRequested())
+  try {
+    const res = await fetchProductListApi()
+    return dispatch(actions.fetchProductListSuccess(res))
+  } catch (err) {
+    return await Promise.reject(dispatch(actions.fetchProductListFailed(err)))
+  }
 }
