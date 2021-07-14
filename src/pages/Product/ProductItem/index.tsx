@@ -37,7 +37,7 @@ import CustomCircularUnderload from "../../../components/Loading/CustomCircularU
 import CircularUnderLoad from "../../../components/Loading/CustomCircularUnderload"
 import { useEffect } from "react"
 import { useThunkDispatch } from "../../../hooks/useThunkDispatch"
-import { getProductItem } from "./ProductItem.thunks"
+import { fetchProductItem } from "./ProductItem.thunks"
 import { useAppSelector } from "../../../hooks/useAppSelector"
 import { ClassNameMap } from "@material-ui/core/styles/withStyles"
 import { InputProps } from "@material-ui/core"
@@ -74,7 +74,9 @@ const authors = [
 
 function ProductItem(props: any) {
   const params = useParams<any | null>()
-  const { productItem } = useAppSelector(state => state.productItemReducer)
+  const { productItem, loading } = useAppSelector(
+    state => state.productItemReducer
+  )
   const classes = useStyles()
 
   // const _handleSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,11 +86,10 @@ function ProductItem(props: any) {
   //   }
   // }
 
-  const [loading, setLoading] = React.useState(false)
   const dispatch = useThunkDispatch()
 
   useEffect(() => {
-    dispatch(getProductItem(params.id as string))
+    dispatch(fetchProductItem(params.id as string))
   }, [params.id!])
 
   return !loading ? (
@@ -110,7 +111,6 @@ function ProductItem(props: any) {
               style={{ display: "flex", flexDirection: "column", margin: 6 }}
             >
               <TextField
-                disabled
                 id="id"
                 label="ID"
                 value={productItem?._id}
@@ -124,7 +124,6 @@ function ProductItem(props: any) {
                 }}
               />
               <TextField
-                disabled
                 className={classes.fieldContainer}
                 id="title"
                 label="Book Title"
@@ -139,7 +138,6 @@ function ProductItem(props: any) {
                 }}
               />
               <TextField
-                disabled
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -153,7 +151,6 @@ function ProductItem(props: any) {
                 value={productItem?.price}
               />
               <TextField
-                disabled
                 style={{ paddingTop: 20 }}
                 multiline
                 InputProps={{
@@ -165,10 +162,9 @@ function ProductItem(props: any) {
                 value={productItem?.description}
               />
               <TextField
-                disabled
                 id="standard-select-currency"
                 label="Category"
-                value={productItem?.category}
+                value={productItem?.category!.name}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -185,10 +181,9 @@ function ProductItem(props: any) {
               </TextField>
 
               <TextField
-                disabled
                 id="standard-select-author"
                 label="Author"
-                value={productItem?.author}
+                value={productItem?.author!.name}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -205,11 +200,10 @@ function ProductItem(props: any) {
                 ))}
               </TextField>
               <TextField
-                disabled
                 id="standard-select-publisher"
                 aria-readonly
                 label="Publisher"
-                value={productItem?.publisher}
+                value={productItem?.publisher!.name}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -226,11 +220,10 @@ function ProductItem(props: any) {
                 ))}
               </TextField>
               <TextField
-                disabled
                 id="standard-select-publisher"
                 aria-readonly
                 label="Provider"
-                value={productItem?.provider}
+                value={productItem?.provider!.name}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -247,7 +240,6 @@ function ProductItem(props: any) {
                 ))}
               </TextField>
               <TextField
-                disabled
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -258,10 +250,9 @@ function ProductItem(props: any) {
                 }}
                 id="stocks"
                 label="Stocks"
-                value={9999}
+                value={productItem?.stocks}
               />
               <TextField
-                disabled
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -272,10 +263,9 @@ function ProductItem(props: any) {
                 }}
                 id="createAt"
                 label="Created At"
-                value="2021-04-26T14:51:46.603Z"
+                value={productItem?.createdAt}
               />
               <TextField
-                disabled
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -286,7 +276,7 @@ function ProductItem(props: any) {
                 }}
                 id="updatedAt"
                 label="Updated At"
-                value="2021-04-26T14:51:46.603Z"
+                value={productItem?.updatedAt}
               />
               <Divider />
             </FormControl>
