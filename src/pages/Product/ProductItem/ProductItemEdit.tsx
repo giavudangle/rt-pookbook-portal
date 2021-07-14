@@ -28,7 +28,7 @@ import {
 import CircularUnderLoad from "../../../components/Loading/CustomCircularUnderload"
 import { useEffect } from "react"
 import { useThunkDispatch } from "../../../hooks/useThunkDispatch"
-import { getProductItem } from "./ProductItem.thunks"
+import { fetchProductItem } from "./ProductItem.thunks"
 import { useAppSelector } from "../../../hooks/useAppSelector"
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
 import { useMemo } from "react"
@@ -93,7 +93,7 @@ function ProductItemEdit(props: any) {
   })
 
   useEffect(() => {
-    dispatch(getProductItem(params.id as string)).then(res =>
+    dispatch(fetchProductItem(params.id as string)).then(res =>
       reset({ ...res.payload?.data.product })
     )
   }, [params.id!])

@@ -1,9 +1,6 @@
-import { makeStyles } from "@material-ui/core"
-import styled from "styled-components"
+import { makeStyles } from "@material-ui/core/styles"
 
-export const Title = styled.h1`
-  margin-bottom: 1rem;
-`
+import styled from "styled-components"
 export const useStyles = makeStyles(theme => ({
   root: {
     width: "100%"
@@ -25,5 +22,14 @@ export const useStyles = makeStyles(theme => ({
     position: "absolute",
     top: 20,
     width: 1
+  },
+
+  headRoot: {
+    display: "flex",
+    flexDirection: "row"
+  },
+  paginationRoot: {
+    display: "flex",
+    flexDirection: "row"
   }
 }))

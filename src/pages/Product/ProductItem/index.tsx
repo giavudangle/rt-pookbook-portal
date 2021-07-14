@@ -1,4 +1,3 @@
-import React from "react"
 import { useParams } from "react-router-dom"
 import MainLayout from "../../../layouts/_LayoutShared"
 import { useStyles } from "./ProductItem.styles"
@@ -8,39 +7,25 @@ import {
   AccountCircle,
   AddShoppingCart,
   History,
-  Loyalty,
-  Image,
-  Book
-} from "@material-ui/icons"
+  Loyalty} from "@material-ui/icons"
 
 import {
   CssBaseline,
   TextField,
-  Container,
   Typography,
   Grid,
   Paper,
-  createStyles,
-  makeStyles,
-  Theme,
-  Button,
   Divider,
   MenuItem,
   InputAdornment,
-  Input,
   FormControl
 } from "@material-ui/core"
-import { useRef } from "react"
-import { CircularProgress } from "@material-ui/core"
 
-import CustomCircularUnderload from "../../../components/Loading/CustomCircularUnderload"
 import CircularUnderLoad from "../../../components/Loading/CustomCircularUnderload"
 import { useEffect } from "react"
 import { useThunkDispatch } from "../../../hooks/useThunkDispatch"
 import { fetchProductItem } from "./ProductItem.thunks"
 import { useAppSelector } from "../../../hooks/useAppSelector"
-import { ClassNameMap } from "@material-ui/core/styles/withStyles"
-import { InputProps } from "@material-ui/core"
 
 const categories = [
   {
@@ -74,9 +59,7 @@ const authors = [
 
 function ProductItem(props: any) {
   const params = useParams<any | null>()
-  const { productItem, loading } = useAppSelector(
-    state => state.productItemReducer
-  )
+  const { productItem,loading } = useAppSelector(state => state.productItemReducer)
   const classes = useStyles()
 
   // const _handleSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,6 +74,11 @@ function ProductItem(props: any) {
   useEffect(() => {
     dispatch(fetchProductItem(params.id as string))
   }, [params.id!])
+
+
+
+
+
 
   return !loading ? (
     <MainLayout>

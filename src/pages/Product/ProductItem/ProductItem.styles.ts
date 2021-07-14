@@ -4,7 +4,8 @@ import styled from "styled-components"
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      flexGrow: 1
+      flexGrow: 1,
+      cursor: "default"
     },
     paper: {
       padding: theme.spacing(2),
@@ -33,7 +34,8 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     textFields: {
       marginTop: 10,
-      padding: 10
+      padding: 10,
+      cursor: "pointer"
     },
     imagePickerContainer: {
       display: "flex",

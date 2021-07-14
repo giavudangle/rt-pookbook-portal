@@ -14,7 +14,8 @@ import {
   Switch,
   TablePagination,
   Button,
-  Slide
+  Slide,
+  InputBase
 } from "@material-ui/core"
 
 import {} from "@material-ui/core/colors"
@@ -28,6 +29,7 @@ import { useThunkDispatch } from "../../../hooks/useThunkDispatch"
 import { useEffect } from "react"
 import { fetchProductList } from "./ProductList.thunks"
 import { useAppSelector } from "../../../hooks/useAppSelector"
+import CircularUnderLoad from "../../../components/Loading/CustomCircularUnderload"
 
 import {
   SUCCESS_PALETTE,
@@ -37,6 +39,7 @@ import {
 import { useCustomButton } from "../../../hooks/useAppStyles"
 import CustomDialog from "../../../components/Dialog/Dialog"
 import { TransitionProps } from "@material-ui/core/transitions/transition"
+import { Search } from "@material-ui/icons"
 interface IDataFactory {
   id: string
   title: string
@@ -91,7 +94,9 @@ const ProductList: React.FC<IOwnProps> = props => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(5)
 
   const dispatch = useThunkDispatch()
-  const { productList } = useAppSelector(state => state.productListReducer)
+  const { productList, loading } = useAppSelector(
+    state => state.productListReducer
+  )
 
   const { products, pageSize } = productList
 
@@ -188,7 +193,9 @@ const ProductList: React.FC<IOwnProps> = props => {
     setOpenDiaglog(false)
   }
 
-  return (
+  return loading ? (
+    <CircularUnderLoad />
+  ) : (
     <MainLayout>
       <div className={classes.root}>
         <Paper className={classes.paper}>
@@ -315,19 +322,22 @@ const ProductList: React.FC<IOwnProps> = props => {
               </TableBody>
             </Table>
           </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 15]}
-            count={pageSize as number}
-            rowsPerPage={rowsPerPage as number}
-            page={page as number}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
+          <div className={classes.paginationRoot}>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 15]}
+              count={pageSize as number}
+              rowsPerPage={rowsPerPage as number}
+              page={page as number}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+            <FormControlLabel
+              style={{ marginLeft: 10 }}
+              control={<Switch checked={dense} onChange={handleChangeDense} />}
+              label="Dense padding"
+            />
+          </div>
         </Paper>
-        <FormControlLabel
-          control={<Switch checked={dense} onChange={handleChangeDense} />}
-          label="Dense padding"
-        />
       </div>
     </MainLayout>
   )

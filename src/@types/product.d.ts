@@ -15,6 +15,13 @@ interface IProduct {
   publisher: IPublisher
 }
 
+interface IProductFlatten extends IProduct {
+  author: string
+  category: string
+  provider: string
+  publisher: string
+}
+
 interface IResponseFetchProductsApi extends IHttpResponse {
   data: {
     products: IProduct[]
