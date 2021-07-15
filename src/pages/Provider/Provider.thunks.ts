@@ -1,13 +1,13 @@
-import { userLoginApi } from "../../apis/user.api"
+import { fetchProvidersApi } from "../../apis/provider.api"
+import { ThunkDispatchType } from "../../store"
 import * as actions from "./Provider.actions"
 
-// Fix dispatch with ThunkDispatch custom in store
-export const login = (payload: IRequestLogin) => dispatch => {
-  dispatch(actions.loginRequested)
-  return userLoginApi(payload)
-    .then(response => {
-      localStorage.setItem("token", response.data.access_token)
-      return dispatch(actions.loginSuccess(response))
-    })
-    .catch(err => Promise.reject(dispatch(actions.loginFailed(err))))
+export const fetchProviders = () => async (dispatch: ThunkDispatchType) => {
+  dispatch(actions.fetchProvidersRequested)
+  try {
+    const response = await fetchProvidersApi()
+    return dispatch(actions.fetchProvidersSuccess(response))
+  } catch (e) {
+    return await Promise.reject(dispatch(actions.fetchProvidersFailed(e)))
+  }
 }
