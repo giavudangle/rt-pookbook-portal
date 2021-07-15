@@ -20,6 +20,7 @@ import { INFO_PALETTE } from "../../../../utils/useCustomColor"
 interface IEnhancedTableToolbar {
   numSelected: number
   titleToolbar: string
+  handleSearch: (e: any) => void
 }
 
 const useToolbarStyles = makeStyles(theme => ({
@@ -58,7 +59,7 @@ const useToolbarStyles = makeStyles(theme => ({
 
 export const EnhancedTableToolbar: React.FC<IEnhancedTableToolbar> = props => {
   const classes = useToolbarStyles()
-  const { numSelected, titleToolbar } = props
+  const { numSelected, titleToolbar, handleSearch } = props
 
   return (
     <Toolbar
@@ -96,6 +97,7 @@ export const EnhancedTableToolbar: React.FC<IEnhancedTableToolbar> = props => {
           </IconButton>
         </Tooltip>
         <TextField
+          onChange={handleSearch}
           id="standard-search-product"
           fullWidth
           InputProps={{

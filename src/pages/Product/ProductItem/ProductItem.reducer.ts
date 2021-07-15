@@ -26,7 +26,7 @@ export const ProductItemReducer = (state = initialState, action: TActions) =>
         break
       case types.FETCH_PRODUCT_ITEM_SUCCESS:
         draft.loading = false
-        draft.productItem = action.payload?.data.product
+        draft.productItem = action.payload?.data.product as IProduct
         break
       case types.FETCH_PRODUCT_ITEM_FAILED:
         draft.loading = false

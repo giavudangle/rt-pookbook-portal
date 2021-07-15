@@ -7,7 +7,8 @@ import {
   AccountCircle,
   AddShoppingCart,
   History,
-  Loyalty} from "@material-ui/icons"
+  Loyalty
+} from "@material-ui/icons"
 
 import {
   CssBaseline,
@@ -27,39 +28,13 @@ import { useThunkDispatch } from "../../../hooks/useThunkDispatch"
 import { fetchProductItem } from "./ProductItem.thunks"
 import { useAppSelector } from "../../../hooks/useAppSelector"
 
-const categories = [
-  {
-    value: "Sách văn học",
-    label: "Sách văn học"
-  },
-  {
-    value: "Sách kinh tế",
-    label: "Sách kinh tế"
-  },
-  {
-    value: "Sách kỹ năng sống",
-    label: "Sách kỹ năng sống"
-  }
-]
-
-const authors = [
-  {
-    value: "Tống Mạc",
-    label: "Tống Mạc"
-  },
-  {
-    value: "Tống Đình",
-    label: "Tống Đình"
-  },
-  {
-    value: "Tống Thiên",
-    label: "Tống Thiên"
-  }
-]
-
 function ProductItem(props: any) {
   const params = useParams<any | null>()
-  const { productItem,loading } = useAppSelector(state => state.productItemReducer)
+  const { productItem, loading } = useAppSelector(
+    state => state.productItemReducer
+  )
+  const { categories } = useAppSelector(state => state.categoryReducer)
+
   const classes = useStyles()
 
   // const _handleSelectFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,11 +49,6 @@ function ProductItem(props: any) {
   useEffect(() => {
     dispatch(fetchProductItem(params.id as string))
   }, [params.id!])
-
-
-
-
-
 
   return !loading ? (
     <MainLayout>
@@ -160,13 +130,7 @@ function ProductItem(props: any) {
                     </InputAdornment>
                   )
                 }}
-              >
-                {categories.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+              ></TextField>
 
               <TextField
                 id="standard-select-author"
@@ -180,13 +144,7 @@ function ProductItem(props: any) {
                   ),
                   className: classes.textFields
                 }}
-              >
-                {authors.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+              ></TextField>
               <TextField
                 id="standard-select-publisher"
                 aria-readonly
@@ -200,13 +158,7 @@ function ProductItem(props: any) {
                   ),
                   className: classes.textFields
                 }}
-              >
-                {authors.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+              ></TextField>
               <TextField
                 id="standard-select-publisher"
                 aria-readonly
@@ -220,13 +172,7 @@ function ProductItem(props: any) {
                   ),
                   className: classes.textFields
                 }}
-              >
-                {authors.map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+              ></TextField>
               <TextField
                 InputProps={{
                   startAdornment: (

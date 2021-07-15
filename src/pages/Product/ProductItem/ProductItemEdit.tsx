@@ -1,16 +1,8 @@
-import React from "react"
+import React, { useCallback, ReactNode } from "react"
 import { useParams } from "react-router-dom"
 import MainLayout from "../../../layouts/_LayoutShared"
 import { useStyles } from "./ProductItem.styles"
-import {
-  Loyalty,
-  Book,
-  Money,
-  MonetizationOn,
-  Comment,
-  ShowChart,
-  Contacts
-} from "@material-ui/icons"
+import { Loyalty, Book, MonetizationOn, ShowChart } from "@material-ui/icons"
 
 import {
   CssBaseline,
@@ -20,9 +12,8 @@ import {
   Paper,
   InputAdornment,
   FormControl,
-  Select,
   MenuItem,
-  Divider
+  Button
 } from "@material-ui/core"
 
 import CircularUnderLoad from "../../../components/Loading/CustomCircularUnderload"
@@ -30,51 +21,52 @@ import { useEffect } from "react"
 import { useThunkDispatch } from "../../../hooks/useThunkDispatch"
 import { fetchProductItem } from "./ProductItem.thunks"
 import { useAppSelector } from "../../../hooks/useAppSelector"
-import { useForm, SubmitHandler, Controller } from "react-hook-form"
+import { useForm, SubmitHandler, Controller, Control } from "react-hook-form"
 import { useMemo } from "react"
+import { fetchCategories } from "../../Category/Category.thunks"
+import { fetchAuthors } from "../../Author/Author.thunks"
+import { fetchProviders } from "../../Provider/Provider.thunks"
+import { fetchPublishers } from "../../Publisher/Publisher.thunks"
 
-const MOCK = [
-  {
-    _id: "60a0ed23b1125a0ca50ad2a8",
-    name: "Tống Mặc",
-    createdAt: "2021-04-28T04:12:32.965Z",
-    updatedAt: "2021-04-28T04:12:32.965Z",
-    __v: 0
-  },
-  {
-    _id: "60a0f2a8b1125a0ca50b8be0",
-    name: "An Nhiên",
-    createdAt: "2021-04-28T04:12:32.965Z",
-    updatedAt: "2021-04-28T04:12:32.965Z",
-    __v: 0
-  },
-  {
-    _id: "60a8e0cfb1125a0ca52ccaf1",
-    name: "Nguyễn Nhật Ánh",
-    createdAt: "2021-04-28T04:12:32.965Z",
-    updatedAt: "2021-04-28T04:12:32.965Z",
-    __v: 0
-  }
-]
+interface IReactHookFormSelect {
+  name: string
+  label: string
+  control: Control<any>
+  defaultValue?: any
+  children: ReactNode
+}
 
-const currencies = [
-  {
-    value: "USD",
-    label: "$"
-  },
-  {
-    value: "EUR",
-    label: "€"
-  },
-  {
-    value: "BTC",
-    label: "฿"
-  },
-  {
-    value: "JPY",
-    label: "¥"
-  }
-]
+const ReactHookFormSelect: React.FC<IReactHookFormSelect> = ({
+  name,
+  label,
+  defaultValue,
+  children,
+  control,
+  ...props
+}) => {
+  const selectId = `${name}-select`
+  return (
+    <FormControl {...props}>
+      <Controller
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            id={selectId}
+            select
+            label={label}
+            variant="filled"
+            value={field.value ? field.value : {}}
+          >
+            {children}
+          </TextField>
+        )}
+        name={name}
+        defaultValue={defaultValue}
+      />
+    </FormControl>
+  )
+}
 
 function ProductItemEdit(props: any) {
   const params = useParams<any | null>()
@@ -85,6 +77,11 @@ function ProductItemEdit(props: any) {
     state => state.productItemReducer
   )
 
+  const { categories } = useAppSelector(state => state.categoryReducer)
+  const { authors } = useAppSelector(state => state.authorReducer)
+  const { providers } = useAppSelector(state => state.providerReducer)
+  const { publishers } = useAppSelector(state => state.publisherReducer)
+
   const { control, handleSubmit, reset, register } = useForm<IProduct>({
     defaultValues: useMemo(() => {
       return { ...(productItem ?? {}) }
@@ -92,10 +89,33 @@ function ProductItemEdit(props: any) {
     shouldUnregister: true
   })
 
+  const fetchMemoizedCategories = useCallback(() => {
+    dispatch(fetchCategories())
+  }, [categories])
+
+  const fetchMemoizedAuthors = useCallback(() => {
+    dispatch(fetchAuthors())
+  }, [authors])
+
+  const fetchMemoizedProviders = useCallback(() => {
+    dispatch(fetchProviders())
+  }, [providers])
+
+  const fetchMemoizedPublishers = useCallback(() => {
+    dispatch(fetchPublishers())
+  }, [publishers])
+
   useEffect(() => {
-    dispatch(fetchProductItem(params.id as string)).then(res =>
-      reset({ ...res.payload?.data.product })
-    )
+    fetchMemoizedCategories()
+    fetchMemoizedAuthors()
+    fetchMemoizedProviders()
+    fetchMemoizedPublishers()
+  }, [])
+
+  useEffect(() => {
+    dispatch(fetchProductItem(params.id as string)).then(res => {
+      reset({ ...res.payload!.data.product })
+    })
   }, [params.id!])
 
   const onSubmit: SubmitHandler<IProduct> = data => {
@@ -108,8 +128,6 @@ function ProductItemEdit(props: any) {
       //setImage(URL.createObjectURL(img))
     }
   }
-
-  const [currency, setCurrency] = React.useState("EUR")
 
   return !loading ? (
     <MainLayout>
@@ -134,7 +152,6 @@ function ProductItemEdit(props: any) {
               <Controller
                 name="_id"
                 control={control}
-                defaultValue=""
                 render={({ field }) => (
                   <TextField
                     fullWidth
@@ -154,7 +171,6 @@ function ProductItemEdit(props: any) {
               />
               <Controller
                 name="title"
-                defaultValue=""
                 control={control}
                 render={({ field }) => (
                   <TextField
@@ -174,7 +190,6 @@ function ProductItemEdit(props: any) {
               />
               <Controller
                 name="price"
-                defaultValue={0}
                 control={control}
                 render={({ field }) => (
                   <TextField
@@ -194,7 +209,6 @@ function ProductItemEdit(props: any) {
               />
               <Controller
                 name="description"
-                defaultValue=""
                 control={control}
                 render={({ field }) => (
                   <TextField
@@ -210,7 +224,6 @@ function ProductItemEdit(props: any) {
               />
               <Controller
                 name="stocks"
-                defaultValue={1}
                 control={control}
                 render={({ field }) => (
                   <TextField
@@ -233,85 +246,58 @@ function ProductItemEdit(props: any) {
                   />
                 )}
               />
-              <Controller
-                name="author"
+              <ReactHookFormSelect
                 control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    id="filled-select-author"
-                    select
-                    label="Select Author"
-                    variant="filled"
-                  >
-                    {MOCK.map(option => (
-                      <MenuItem key={option.name} value={option.name}>
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                )}
-              />
-              <Controller
                 name="category"
+                label="Select category"
+              >
+                {categories.map(option => (
+                  <MenuItem key={option.name} value={option._id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+              </ReactHookFormSelect>
+              <ReactHookFormSelect
                 control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    id="filled-select-category"
-                    select
-                    label="Select Category"
-                    variant="filled"
-                  >
-                    {MOCK.map(option => (
-                      <MenuItem key={option.name} value={option.name}>
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                )}
-              />
-              <Controller
+                name="author"
+                label="Select author"
+              >
+                {authors.map(option => (
+                  <MenuItem key={option.name} value={option._id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+              </ReactHookFormSelect>
+              <ReactHookFormSelect
+                control={control}
                 name="provider"
+                label="Select provider"
+              >
+                {providers.map(option => (
+                  <MenuItem key={option.name} value={option._id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+              </ReactHookFormSelect>
+              <ReactHookFormSelect
                 control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    id="filled-select-provider"
-                    select
-                    label="Select Provider"
-                    variant="filled"
-                  >
-                    {MOCK.map(option => (
-                      <MenuItem key={option.name} value={option.name}>
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                )}
-              />
-              <Divider />
-              <Controller
                 name="publisher"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    id="filled-select-publisher"
-                    select
-                    label="Select Publisher"
-                    variant="filled"
-                  >
-                    {MOCK.map(option => (
-                      <MenuItem key={option.name} value={option.name}>
-                        {option.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                )}
-              />
-
-              <input type="submit" />
+                label="Select publisher"
+              >
+                {publishers.map(option => (
+                  <MenuItem key={option.name} value={option._id}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+              </ReactHookFormSelect>
+              <Button
+                style={{ marginTop: 10 }}
+                type="submit"
+                color="primary"
+                variant="contained"
+              >
+                SUBMIT
+              </Button>
             </FormControl>
           </Paper>
         </Grid>
@@ -322,4 +308,4 @@ function ProductItemEdit(props: any) {
   )
 }
 
-export default ProductItemEdit
+export default React.memo(ProductItemEdit)
