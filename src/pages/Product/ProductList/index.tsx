@@ -14,8 +14,7 @@ import {
   Switch,
   TablePagination,
   Button,
-  Slide,
-  InputBase
+  Slide
 } from "@material-ui/core"
 
 import {} from "@material-ui/core/colors"
@@ -39,40 +38,6 @@ import {
 import { useCustomButton } from "../../../hooks/useAppStyles"
 import CustomDialog from "../../../components/Dialog/Dialog"
 import { TransitionProps } from "@material-ui/core/transitions/transition"
-import { Search } from "@material-ui/icons"
-interface IDataFactory {
-  id: string
-  title: string
-  price: number
-  description: string
-  url: string
-  thumb: string
-  stocks: number
-  author: string
-  category: string
-  provider: string
-  publisher: string
-  createdAt: string
-  updatedAt: string
-}
-
-function DataFactory(payload: IDataFactory) {
-  return {
-    id: payload.id,
-    title: payload.title,
-    price: payload.price,
-    description: payload.description,
-    url: payload.url,
-    thumb: payload.thumb,
-    stocks: payload.stocks,
-    author: payload.author,
-    category: payload.category,
-    provider: payload.provider,
-    publisher: payload.publisher,
-    createdAt: payload.createdAt,
-    updatedAt: payload.updatedAt
-  }
-}
 
 interface IOwnProps {}
 type Order = "asc" | "desc"
@@ -97,6 +62,7 @@ const ProductList: React.FC<IOwnProps> = props => {
   const { productList, loading } = useAppSelector(
     state => state.productListReducer
   )
+  const { categories } = useAppSelector(state => state.categoryReducer)
 
   const { products, pageSize } = productList
 
@@ -111,7 +77,6 @@ const ProductList: React.FC<IOwnProps> = props => {
       author: item.author.name
     }
   })
-
   const btnClasses = useCustomButton()
 
   useEffect(() => {
@@ -120,7 +85,7 @@ const ProductList: React.FC<IOwnProps> = props => {
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof IDataFactory
+    property: keyof IProduct
   ) => {
     const isAsc = orderBy === property && order === "asc"
     setOrder(isAsc ? "desc" : "asc")
@@ -193,6 +158,13 @@ const ProductList: React.FC<IOwnProps> = props => {
     setOpenDiaglog(false)
   }
 
+  const handleSearch = e => {
+    // FIX THIS
+    // console.log('====================================');
+    // console.log(e.targe.value);
+    // console.log('====================================');
+  }
+
   return loading ? (
     <CircularUnderLoad />
   ) : (
@@ -202,6 +174,7 @@ const ProductList: React.FC<IOwnProps> = props => {
           <EnhancedTableToolbar
             titleToolbar="Products List"
             numSelected={selected.length}
+            handleSearch={handleSearch}
           />
           <TableContainer>
             <Table
@@ -343,4 +316,4 @@ const ProductList: React.FC<IOwnProps> = props => {
   )
 }
 
-export default ProductList
+export default React.memo(ProductList)
