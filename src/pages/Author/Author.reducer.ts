@@ -1,20 +1,34 @@
-import * as types from "./Author.constants"
 import produce from "immer"
+import { WritableDraft } from "immer/dist/internal"
+import * as types from "./Author.constants"
 
-const initialState = {
-  loading: false
+interface IAuthorState {
+  loading: boolean
+  authors: IAuthor[]
 }
 
-export const loginReducer = (state = initialState, action: any) =>
+const initialState: IAuthorState = {
+  loading: false,
+  authors: []
+}
+
+type TActions =
+  | types.TActionFetchAuthorsSuccess
+  | types.TActionFetchAuthorsRequest
+  | types.TActionFetchAuthorsFail
+
+export const AuthorReducer = (state = initialState, action: TActions) =>
   produce(state, draft => {
     switch (action.type) {
-      case types.LOGIN_REQUESTED:
+      case types.FETCH_AUTHORS_REQUESTED:
         draft.loading = true
         break
-      case types.LOGIN_SUCCESS:
+      case types.FETCH_AUTHORS_SUCCESS:
         draft.loading = false
+        draft.authors = action.payload?.data.authors
+          .data as WritableDraft<IAuthor>[]
         break
-      case types.LOGIN_FAILED:
+      case types.FETCH_AUTHORS_FAIL:
         draft.loading = false
         break
       default:

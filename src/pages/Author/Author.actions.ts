@@ -1,15 +1,18 @@
 import * as types from "./Author.constants"
+import type {
+  TActionFetchAuthorsFail,
+  TActionFetchAuthorsRequest,
+  TActionFetchAuthorsSuccess
+} from "./Author.constants"
+import { AbstractActionFactory } from "../../helpers/action"
 
-export const loginRequested = () => ({
-  type: types.LOGIN_REQUESTED
-})
+export const fetchAuthorsRequested = (): TActionFetchAuthorsRequest =>
+  AbstractActionFactory(types.FETCH_AUTHORS_REQUESTED, null)
 
-export const loginSuccess = payload => ({
-  type: types.LOGIN_SUCCESS,
-  payload
-})
+export const fetchAuthorsSuccess = (
+  payload: IResponseFetchAuthorsApi
+): TActionFetchAuthorsSuccess =>
+  AbstractActionFactory(types.FETCH_AUTHORS_SUCCESS, payload)
 
-export const loginFailed = payload => ({
-  type: types.LOGIN_SUCCESS,
-  payload
-})
+export const fetchAuthorsFailed = (payload: string): TActionFetchAuthorsFail =>
+  AbstractActionFactory(types.FETCH_AUTHORS_FAIL, payload)
