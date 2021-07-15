@@ -1,5 +1,4 @@
 interface IProduct {
-  id?: string
   _id: string
   title: string
   price: number

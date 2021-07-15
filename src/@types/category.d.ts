@@ -1,18 +1,19 @@
 interface ICategory {
   _id: string
-  id?: string
   code?: string
   name: string
   createdAt: string
   updatedAt: string
 }
 
-interface IResponseGetCategoriesApi extends IHttpResponse {
+interface IResponseFetchCategoriesApi extends IHttpResponse {
   data: {
-    categories: ICategory[]
+    categories: {
+      data: ICategory[]
+    }
   }
 }
 
-interface IResponseGetCategoriesPayload extends IAction {
-  payload?: IResponseGetCategoriesApi | string | null
+interface IResponseFetchCategoriesPayload extends IAction {
+  payload?: IResponseFetchCategoriesApi | string | null
 }
