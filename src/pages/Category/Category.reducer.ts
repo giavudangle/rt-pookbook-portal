@@ -25,8 +25,8 @@ export const CategoryReducer = (state = initialState, action: TActions) =>
         break
       case types.FETCH_CATEGORIES_SUCCESS:
         draft.loading = false
-        draft.categories = action.payload?.data
-          .categories as WritableDraft<ICategory>[]
+        draft.categories = action.payload?.data.categories
+          .data as WritableDraft<ICategory>[]
         break
       case types.FETCH_CATEGORIES_FAIL:
         draft.loading = false

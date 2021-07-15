@@ -10,7 +10,7 @@ export const fetchCategoriesRequested = (): TActionFetchCategoriesRequest =>
   AbstractActionFactory(types.FETCH_CATEGORIES_REQUESTED, null)
 
 export const fetchCategoriesSuccess = (
-  payload: IResponseGetCategoriesApi
+  payload: IResponseFetchCategoriesApi
 ): TActionFetchCategoriesSuccess =>
   AbstractActionFactory(types.FETCH_CATEGORIES_SUCCESS, payload)
 

@@ -10,7 +10,7 @@ export type TActionFetchCategoriesRequest = IAction<
 >
 export type TActionFetchCategoriesSuccess = IAction<
   typeof FETCH_CATEGORIES_SUCCESS,
-  IResponseGetCategoriesApi
+  IResponseFetchCategoriesApi
 >
 export type TActionFetchCategoriesFail = IAction<
   typeof FETCH_CATEGORIES_FAIL,
