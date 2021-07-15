@@ -5,14 +5,14 @@ import {
 } from "../constants/http"
 import { rootApi } from "./root.api"
 
-export const fetchCategoriesApi = (): Promise<IResponseFetchCategoriesApi> => {
+export const fetchAuthorsApi = (): Promise<IResponseFetchAuthorsApi> => {
   return new Promise((resolve, reject) => {
     rootApi
-      .get(`/categories`)
+      .get(`/authors`)
       .then(response =>
         resolve({
           data: {
-            categories: response.data
+            authors: response.data
           },
           message: HTTP_RESPONSE_MESSAGE.SUCCESS,
           status: HTTP_RESPONSE_STATUS.SUCCESS,
