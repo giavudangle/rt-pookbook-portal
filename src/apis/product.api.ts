@@ -47,3 +47,23 @@ export const fetchProductApi = (
       .catch(e => reject(e))
   })
 }
+
+export const createProductApi = (
+  data: FormData
+): Promise<IResponseCreateProductItemApi> => {
+  return new Promise((resolve, reject) => {
+    rootApi
+      .post(`/products`,data)
+      .then(res => resolve({
+        data:{
+          product:res.data,       
+        },
+        message: HTTP_RESPONSE_MESSAGE.SUCCESS,
+        code: HTTP_RESPONSE_CODE.SUCCESS,
+        status: HTTP_RESPONSE_STATUS.SUCCESS
+      }))
+      .catch(e => reject(e))
+  })
+}
+
+

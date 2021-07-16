@@ -8,6 +8,9 @@ const ProductItem = lazy(() => import("../pages/Product/ProductItem"))
 const ProductItemEdit = lazy(
   () => import("../pages/Product/ProductItem/ProductItemEdit")
 )
+const ProductItemCreate = lazy(
+  () => import("../pages/Product/ProductItem/ProductItemCreate")
+)
 
 export default function ProductRoutes() {
   return (
@@ -18,6 +21,15 @@ export default function ProductRoutes() {
         component={() => (
           <Suspense fallback={<Loading />}>
             <ProductList />
+          </Suspense>
+        )}
+      />
+      <AuthenticatedGuard
+        exact
+        path={`${PATH.PRODUCT}/create`}
+        component={() => (
+          <Suspense fallback={<Loading />}>
+            <ProductItemCreate />
           </Suspense>
         )}
       />

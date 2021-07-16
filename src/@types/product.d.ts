@@ -21,6 +21,23 @@ interface IProductFlatten extends IProduct {
   publisher: string
 }
 
+interface IProductItemCreate {
+  title: string
+  price: number
+  description?: string
+  stocks: number
+  authorId: string
+  categoryId: string
+  providerId: string
+  publisherId: string
+}
+
+interface IResponseCreateProductItemApi extends IHttpResponse {
+  data: {
+    product: IProduct
+  }
+}
+
 interface IResponseFetchProductsApi extends IHttpResponse {
   data: {
     products: IProduct[]
@@ -30,16 +47,24 @@ interface IResponseFetchProductsApi extends IHttpResponse {
   }
 }
 
-interface IResponseFetchProductsPayload extends IAction {
-  payload?: IResponseFetchProductsApi | string
-}
-
 interface IResponseFetchProductItemApi extends IHttpResponse {
   data: {
     product: IProduct
   }
 }
 
+/**
+ * PAYLOAD INTERFACES
+ */
+
+interface IResponseFetchProductsPayload extends IAction {
+  payload?: IResponseFetchProductsApi | string
+}
+
 interface IResponseFetchProductItemPayload extends IAction {
   payload?: IResponseFetchProductItemApi | string
+}
+
+interface IResponseCreateProductItemPayload extends IAction {
+  payload?: IResponseCreateProductItemApi | string
 }
