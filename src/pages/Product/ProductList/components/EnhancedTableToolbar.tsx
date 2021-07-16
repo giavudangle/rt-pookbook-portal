@@ -15,6 +15,8 @@ import {
   Search as SearchIcon
 } from "@material-ui/icons"
 import clsx from "clsx"
+import { Link } from "react-router-dom"
+import { PATH } from "../../../../constants/paths"
 import { INFO_PALETTE } from "../../../../utils/useCustomColor"
 
 interface IEnhancedTableToolbar {
@@ -60,10 +62,7 @@ const useToolbarStyles = makeStyles(theme => ({
 
 export const EnhancedTableToolbar: React.FC<IEnhancedTableToolbar> = props => {
   const classes = useToolbarStyles()
-  const { numSelected, titleToolbar, handleSearch,searchValue } = props
-console.log('====================================');
-console.log(searchValue);
-console.log('====================================');
+  const { numSelected, titleToolbar, handleSearch, searchValue } = props
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -124,6 +123,8 @@ console.log('====================================');
         <div className={classes.tooltipRoot}>
           <Tooltip style={{ margin: 20 }} title="Create Product">
             <IconButton
+              component={Link}
+              to={`${PATH.PRODUCT}/create`}
               style={{ backgroundColor: INFO_PALETTE.MAIN, color: "#fff" }}
               aria-label="create-product"
             >

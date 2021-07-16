@@ -16,6 +16,9 @@ type TActions =
   | types.TActionFetchProductItemFail
   | types.TActionFetchProductItemRequest
   | types.TActionFetchProductItemSuccess
+  | types.TActionCreateProductItemRequest
+  | types.TActionCreateProductItemSuccess
+  | types.TActionCreateProductItemFail
 
 export const ProductItemReducer = (state = initialState, action: TActions) =>
   produce(state, draft => {
@@ -29,6 +32,12 @@ export const ProductItemReducer = (state = initialState, action: TActions) =>
         draft.productItem = action.payload?.data.product as IProduct
         break
       case types.FETCH_PRODUCT_ITEM_FAILED:
+        draft.loading = false
+        break
+      case types.CREATE_NEW_PRODUCT_REQUESTED:
+        draft.loading = true
+        break
+      case types.CREATE_NEW_PRODUCT_SUCCESS:
         draft.loading = false
         break
       default:

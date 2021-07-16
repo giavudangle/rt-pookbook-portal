@@ -3,12 +3,15 @@ import * as types from "./ProductItem.constants"
 import {
   TActionFetchProductItemFail,
   TActionFetchProductItemSuccess,
-  TActionFetchProductItemRequest
+  TActionFetchProductItemRequest,
+  TActionCreateProductItemFail,
+  TActionCreateProductItemRequest,
+  TActionCreateProductItemSuccess
 } from "./ProductItem.constants"
 
 export const fetchProductItemRequested = (): TActionFetchProductItemRequest =>
   AbstractActionFactory(types.FETCH_PRODUCT_ITEM_REQUESTED, null)
-// Add more type constraint here
+
 export const fetchProductItemSuccess = (
   payload: IResponseFetchProductItemApi
 ): TActionFetchProductItemSuccess =>
@@ -18,3 +21,17 @@ export const fetchProductItemFailed = (
   payload: string
 ): TActionFetchProductItemFail =>
   AbstractActionFactory(types.FETCH_PRODUCT_ITEM_FAILED, payload)
+
+
+export const createProductItemRequested = (): TActionCreateProductItemRequest =>
+  AbstractActionFactory(types.CREATE_NEW_PRODUCT_REQUESTED, null)
+
+export const createProductItemSuccess = (
+  payload: IResponseCreateProductItemApi
+): TActionCreateProductItemSuccess =>
+  AbstractActionFactory(types.CREATE_NEW_PRODUCT_SUCCESS, payload)
+
+export const createProductItemFailed = (
+  payload: string
+): TActionCreateProductItemFail =>
+  AbstractActionFactory(types.CREATE_NEW_PRODUCT_FAILED, payload)
