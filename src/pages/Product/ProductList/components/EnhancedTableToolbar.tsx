@@ -21,6 +21,7 @@ interface IEnhancedTableToolbar {
   numSelected: number
   titleToolbar: string
   handleSearch: (e: any) => void
+  searchValue: string
 }
 
 const useToolbarStyles = makeStyles(theme => ({
@@ -59,8 +60,10 @@ const useToolbarStyles = makeStyles(theme => ({
 
 export const EnhancedTableToolbar: React.FC<IEnhancedTableToolbar> = props => {
   const classes = useToolbarStyles()
-  const { numSelected, titleToolbar, handleSearch } = props
-
+  const { numSelected, titleToolbar, handleSearch,searchValue } = props
+console.log('====================================');
+console.log(searchValue);
+console.log('====================================');
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -97,6 +100,7 @@ export const EnhancedTableToolbar: React.FC<IEnhancedTableToolbar> = props => {
           </IconButton>
         </Tooltip>
         <TextField
+          value={searchValue}
           onChange={handleSearch}
           id="standard-search-product"
           fullWidth

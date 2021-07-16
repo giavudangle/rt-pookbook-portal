@@ -29,7 +29,7 @@ import { useEffect } from "react"
 import { fetchProductList } from "./ProductList.thunks"
 import { useAppSelector } from "../../../hooks/useAppSelector"
 import CircularUnderLoad from "../../../components/Loading/CustomCircularUnderload"
-
+import _ from 'lodash'
 import {
   SUCCESS_PALETTE,
   ERROR_PALETTE,
@@ -38,6 +38,7 @@ import {
 import { useCustomButton } from "../../../hooks/useAppStyles"
 import CustomDialog from "../../../components/Dialog/Dialog"
 import { TransitionProps } from "@material-ui/core/transitions/transition"
+import { useCallback } from "react"
 
 interface IOwnProps {}
 type Order = "asc" | "desc"
@@ -62,11 +63,10 @@ const ProductList: React.FC<IOwnProps> = props => {
   const { productList, loading } = useAppSelector(
     state => state.productListReducer
   )
-  const { categories } = useAppSelector(state => state.categoryReducer)
 
   const { products, pageSize } = productList
 
-  const mutableProductList = JSON.parse(
+  const mutableProductList : IProductFlatten[] = JSON.parse(
     JSON.stringify([...productList.products])
   ).map((item: any) => {
     return {
@@ -158,12 +158,18 @@ const ProductList: React.FC<IOwnProps> = props => {
     setOpenDiaglog(false)
   }
 
-  const handleSearch = e => {
-    // FIX THIS
-    // console.log('====================================');
-    // console.log(e.targe.value);
-    // console.log('====================================');
+  const [searchTerm,setSetTerm] = useState<string>('Tôi');
+  
+  const handleSearch = (e : React.ChangeEvent<HTMLInputElement>) => {
+      setSetTerm(e.target.value)  
   }
+
+  const filterSearch = () => {
+    return mutableProductList.filter(item => item.title.includes(searchTerm))
+  }
+  
+
+
 
   return loading ? (
     <CircularUnderLoad />
@@ -172,6 +178,7 @@ const ProductList: React.FC<IOwnProps> = props => {
       <div className={classes.root}>
         <Paper className={classes.paper}>
           <EnhancedTableToolbar
+            searchValue={searchTerm}
             titleToolbar="Products List"
             numSelected={selected.length}
             handleSearch={handleSearch}
@@ -193,9 +200,10 @@ const ProductList: React.FC<IOwnProps> = props => {
                 rowCount={products.length}
               />
               <TableBody>
-                {stableSort(
-                  mutableProductList as any,
-                  getComparator(order, orderBy)
+                {
+                stableSort( !searchTerm.length ? mutableProductList as any
+                  : filterSearch()
+                  ,getComparator(order, orderBy)             
                 )
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
