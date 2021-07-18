@@ -24,6 +24,7 @@ interface IEnhancedTableToolbar {
   titleToolbar: string
   handleSearch: (e: any) => void
   searchValue: string
+  onRemove : any
 }
 
 const useToolbarStyles = makeStyles(theme => ({
@@ -62,7 +63,7 @@ const useToolbarStyles = makeStyles(theme => ({
 
 export const EnhancedTableToolbar: React.FC<IEnhancedTableToolbar> = props => {
   const classes = useToolbarStyles()
-  const { numSelected, titleToolbar, handleSearch, searchValue } = props
+  const { numSelected, titleToolbar, handleSearch, searchValue,onRemove } = props
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -115,8 +116,10 @@ export const EnhancedTableToolbar: React.FC<IEnhancedTableToolbar> = props => {
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
+          <IconButton 
+          onClick={onRemove}
+          aria-label="delete">
+            <DeleteIcon  />
           </IconButton>
         </Tooltip>
       ) : (

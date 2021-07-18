@@ -16,7 +16,7 @@ interface ICustomDialog {
   >
   keepMounted: boolean
   onClose: () => void
-  onResolve: () => void
+  onResolve: any
   onReject: () => void
   labelledBy: string
   describedBy: string
@@ -44,35 +44,37 @@ const CustomDialog: React.FC<ICustomDialog> = ({
   btnResolveName,
   btnRejectName,
   ...res
-}) => (
-  <Dialog
-    style={{ backgroundColor: INFO_PALETTE.LIGHT }}
-    open={open}
-    TransitionComponent={transComp}
-    keepMounted={keepMounted}
-    onClose={onClose}
-    aria-labelledby={labelledBy}
-    aria-describedby={describedBy}
-  >
-    <DialogTitle id={titleId}>{dialogTitle}</DialogTitle>
-    <DialogContent>
-      <DialogContentText id={contentId}>{dialogContent}</DialogContentText>
-    </DialogContent>
-    <DialogActions>
-      <Button
-        onClick={onResolve}
-        style={{ backgroundColor: ERROR_PALETTE.MAIN, color: "#fff" }}
-      >
-        {btnResolveName}
-      </Button>
-      <Button
-        onClick={onReject}
-        style={{ backgroundColor: INFO_PALETTE.MAIN, color: "#fff" }}
-      >
-        {btnRejectName}
-      </Button>
-    </DialogActions>
-  </Dialog>
-)
+}) => {
+  return (
+    <Dialog
+      style={{ backgroundColor: INFO_PALETTE.LIGHT }}
+      open={open}
+      TransitionComponent={transComp}
+      keepMounted={keepMounted}
+      onClose={onClose}
+      aria-labelledby={labelledBy}
+      aria-describedby={describedBy}
+    >
+      <DialogTitle id={titleId}>{dialogTitle}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id={contentId}>{dialogContent}</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={onResolve}
+          style={{ backgroundColor: ERROR_PALETTE.MAIN, color: "#fff" }}
+        >
+          {btnResolveName}
+        </Button>
+        <Button
+          onClick={onReject}
+          style={{ backgroundColor: INFO_PALETTE.MAIN, color: "#fff" }}
+        >
+          {btnRejectName}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  )
+}
 
 export default CustomDialog

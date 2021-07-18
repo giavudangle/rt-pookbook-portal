@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from "react"
 import { Route, Switch } from "react-router-dom"
 import { PATH } from "../constants/paths"
-import Loading from "../components/Loading/Loading"
+import Loading from "../components/Loading/CustomCircularUnderload"
 const Login = lazy(() => import("../pages/Login/Login"))
 
 export default function LoginRoutes() {

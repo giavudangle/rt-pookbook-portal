@@ -66,4 +66,17 @@ export const createProductApi = (
   })
 }
 
+export const deleteProductApi = (id : string) :Promise<IProductDelete> => {
+  return new Promise((resolve,reject) => {
+    rootApi.delete<IProductDelete>(`/products/${id}`)
+    .then(response => {
+      resolve({
+        status:response.status,
+        message: HTTP_RESPONSE_MESSAGE.SUCCESS,    
+      })
+    })
+    .catch(e => reject(e))
+  })
+}
+
 

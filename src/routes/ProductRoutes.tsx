@@ -2,7 +2,7 @@ import React, { lazy, Suspense } from "react"
 import { Switch } from "react-router-dom"
 import AuthenticatedGuard from "../guards/AuthenticatedGuard"
 import { PATH } from "../constants/paths"
-import Loading from "../components/Loading/Loading"
+import Loading from "../components/Loading/CustomCircularUnderload"
 const ProductList = lazy(() => import("../pages/Product/ProductList"))
 const ProductItem = lazy(() => import("../pages/Product/ProductItem"))
 const ProductItemEdit = lazy(

@@ -17,7 +17,6 @@ import {
   Slide
 } from "@material-ui/core"
 
-import {} from "@material-ui/core/colors"
 import { EnhancedTableToolbar, EnhancedTableHead } from "./components"
 import { stableSort } from "../../../helpers/sort"
 import { getComparator } from "../../../helpers/comparator"
@@ -26,7 +25,7 @@ import { Link } from "react-router-dom"
 import { PATH } from "../../../constants/paths"
 import { useThunkDispatch } from "../../../hooks/useThunkDispatch"
 import { useEffect } from "react"
-import { fetchProductList } from "./ProductList.thunks"
+import { fetchProductList, deleteProduct } from "./ProductList.thunks"
 import { useAppSelector } from "../../../hooks/useAppSelector"
 import CircularUnderLoad from "../../../components/Loading/CustomCircularUnderload"
 import _ from "lodash"
@@ -148,11 +147,13 @@ const ProductList: React.FC<IOwnProps> = props => {
       color: txtColor
     }
   }
+  const [selectedDeleteItem, setSelectedDeleteItem] = useState<string>("")
 
   const [openDialog, setOpenDiaglog] = React.useState(false)
 
-  const handleClickOpen = () => {
-    setOpenDiaglog(true)
+  const handleClickOpen = (e: any, id: string) => {
+    setSelectedDeleteItem(id)
+    setOpenDiaglog(true)  
   }
 
   const handleClose = () => {
@@ -167,6 +168,17 @@ const ProductList: React.FC<IOwnProps> = props => {
     return mutableProductList.filter(item => item.title.includes(searchTerm))
   }
 
+  const handleResolveDialog = async () => {
+    await dispatch(deleteProduct(selectedDeleteItem))   
+    await dispatch(fetchProductList())
+    setSelected([])
+    handleClose()
+  }
+
+  const handleOnRemove = () => {
+    // handle remove many later
+  }
+
   return loading ? (
     <CircularUnderLoad />
   ) : (
@@ -178,6 +190,7 @@ const ProductList: React.FC<IOwnProps> = props => {
             titleToolbar="Products List"
             numSelected={selected.length}
             handleSearch={handleSearch}
+            onRemove={handleOnRemove}
           />
           <TableContainer>
             <Table
@@ -204,17 +217,17 @@ const ProductList: React.FC<IOwnProps> = props => {
                 )
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    const isItemSelected = isSelected(row.title)
+                    const isItemSelected = isSelected(row._id)
                     const labelId = `enhanced-table-checkbox-${index}`
                     return (
                       <TableRow
                         style={{ cursor: "pointer" }}
                         hover
-                        onClick={event => handleClick(event, row.title as any)}
+                        onClick={event => handleClick(event, row._id as any)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.title}
+                        key={row._id}
                         selected={isItemSelected}
                       >
                         <TableCell padding="checkbox">
@@ -268,10 +281,13 @@ const ProductList: React.FC<IOwnProps> = props => {
                             style={makeStylesButton(ERROR_PALETTE.MAIN, "#FFF")}
                             className={btnClasses.errorButton}
                             variant="contained"
-                            onClick={handleClickOpen}
+                            onClick={e => handleClickOpen(e, row._id as string)}
                           >
                             DELETE
                           </Button>
+                        </TableCell>
+
+                        <TableCell>
                           <CustomDialog
                             open={openDialog}
                             transComp={Transition}
@@ -284,7 +300,7 @@ const ProductList: React.FC<IOwnProps> = props => {
                             dialogTitle={`Are you sure to delete ${row.title}`}
                             dialogContent="This item will be delete immediately. You can't undo this action."
                             onReject={handleClose}
-                            onResolve={handleClose}
+                            onResolve={handleResolveDialog}
                             btnResolveName="Resolve"
                             btnRejectName="Reject"
                           />
