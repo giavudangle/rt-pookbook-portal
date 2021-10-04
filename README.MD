@@ -1,13 +1,6 @@
- ## PookBook Portal ( powered by Coding with Vudang ) 🚀
+ ## Ecommerce-Client 🚀
  
- 
-[![](https://img.shields.io/badge/Facebook-CodingwithVudang-blue)](https://www.facebook.com/codingwithvudang)
-[![](https://img.shields.io/badge/Gmail-codingwithvudang@gmail.com-red)](mailto:codingwithvudang@gmail@gmail.com)
 
-<div >
-<img width="40%" height="40%" src="https://res.cloudinary.com/codingwithvudang/image/upload/v1622117732/logo_hcbfie.png" >
-<img width="40%" height="40%" src="https://res.cloudinary.com/codingwithvudang/image/upload/v1622100868/sz4scfp9eit31cqy8xnf.jpg" >
-</div>
 
  ### 🚀 The Portal for PookBook Ecosystem 
 
